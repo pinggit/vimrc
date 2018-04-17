@@ -7,12 +7,13 @@
 "looks 4 key groups are a/v, and good, for customization:
 "Fn, arrow, "," , double keys
 "
-"keys: {{{2
+"direction keys: {{{2
 "up/down/left/right	c-e c-y zh zl (move screen up/dn/lf/rt 1 CH)
 "Alt-up/down: 		go prev/next buffer in curr tab
 "Alt-left/right:	move curr tab left/right
-"S-left/right/up/down: 	resize window width/height
-"
+""S-left/right:        	resize window width (diabled (2018-03-13) )
+""S-left/right:        	scroll a screen horizontally
+"S-up/down:            	resize window height
 "no in this file
 "Ctrl-left/right/up/down: Voom: move the node left/right/up/down
 " 			best way is to use \-lrud instead
@@ -24,7 +25,7 @@
 "ctrl-alt-left/right:   vim: go prev/next tab (looks only in xcfe?)
 " 			better use Ngt instead
 "
-"keys: {{{2
+"func keys: {{{2
 "C-F2		toggle guioptions
 
 "F1-F5 seems tricky and problematic under secureCRT
@@ -53,7 +54,7 @@
 "-              c-b
 "<space>        c-f
 
-", leading {{{2
+",leading {{{2
 ",ab 		turn to (asciidoc) bullet list(add * in front of line)
 ",ac            toggle acp(autocomplpop)
 ",ad		archive done
@@ -64,7 +65,8 @@
 "               visual: replace selected text with html
 ",aH            prompt asciidoc in command line for customer use
 "
-",ai            asciiart to image
+",ai            markdown link to asciidoc link
+"               asciiart to image (disabled)
 ",al 		insert a list block
 ",aL 		insert a literal block
 ",am 		insert a literal block with macro(ifdef):start
@@ -95,6 +97,8 @@
 " 		(not quite good for large or encrypted file)
 ",cd 		go to folders of current shell
 ",co            colorscheme toggling
+",ci,cI,cr      iterate next,prev,random colorscheme
+"
 ",cv 		Conqterm, send visual text to recent conqterm buffer
 "                   (disabled, not quite oftenly used)
 "               start conqterm in split window(vertically) 
@@ -106,8 +110,9 @@
 ",da 		append a timestamp in curr cursor place
 ",Di 		insert a timestamp in curr cursor place
 ",Da 		append a timestamp in curr cursor place
-",dE            clear all comment lines, except shebang line, (prev S-F7)
-",de            remove just empty lines (prev C-F7)
+",dE            clear all comment lines, except shebang line, use perldo
+",de            same, but use ;g , more portable
+",de            visual mode: remove just empty lines (prev C-F7)
 ",do            ]cdo
 ",dp            ]cdp
 
@@ -117,6 +122,10 @@
 ",en            mapping for keyword searching cmd from junose command captures
 
 ",fo            set format=+a
+",fl 		set ft=jel
+",fc 		set ft=jec
+",fj            fold junos config
+
 ",gr 		recursive grep operator
 ",gp            get pr
 ",gq            v  ,gq           :s/\s\+/ /g<CR>gvgq
@@ -129,9 +138,6 @@
 ",i             flexible map, for temporary use
 "
 ",je 		set syn lines, disabled (don't want to mess things up)
-",jf 		set ft=jel
-",jc 		set ft=jec
-",jz            fold junos config
 ",jd            append discus code in the file
 "
 ",ja            asciidoc publish blog to jekyll
@@ -230,7 +236,7 @@
 "
 " ""            visual map, :CopyFold
 
-"; leading {{{2
+";leading {{{2
 
 "keys {{{2
 "
@@ -264,7 +270,7 @@
 "side effects to other options,maps
 set nocp 	    
 
-
+set sidescroll=3                "good for scrolling long line horizontally
 set ruler
 set showcmd 			"seems no effect, maybe because existing config
 "space page down ,shift-space doesn't work
@@ -274,6 +280,7 @@ map <SPACE> <C-F>
 map - <C-B>
 set hls				"highlight search,set nohls to turn off
 set nowrapscan
+set nowrap                      "make log file looks aligning better, (2018-04-05) 
 set is				"increamental(realtime) search,
 set backspace=indent,eol,start	"control backspace key
 
@@ -351,9 +358,19 @@ if !hasmapto("<Plug>VLToggle")
 endif
 let &cpo = s:save_cpo | unlet s:save_cpo
 
-"must have mini--- {{{2
-"  for fast paste into other machines
-"copy and paste below lines in new vim ex mode
+""must have mini--- {{{2
+""  for fast paste into other machines
+""copy and paste below lines in new vim ex mode
+"function! TogglePaste()
+"    if (&paste == 0)
+"	setl paste
+"    else
+"	setl nopaste
+"    endif
+"endfu
+"nn ,p :call TogglePaste()<CR>:set paste?<CR>
+"map oo o<Esc>k<esc>
+"map OO O<Esc>j<esc>
 ":set nocp 	    
 ":set ruler
 ":set showcmd 			"seems no effect, maybe because existing config
@@ -364,24 +381,42 @@ let &cpo = s:save_cpo | unlet s:save_cpo
 ":set is				"increamental(realtime) search,
 ":set backspace=indent,eol,start	"control backspace key
 ":set whichwrap=b,s,<,>,[,]	"which key stroke can go back to prev line:
-":				" backspace,space,left,right,left,right in
-":				" insert mode
+"":				" backspace,space,left,right,left,right in
+"":				" insert mode
 ":set number			"set line number
 ":filetype plugin	indent on
 ":set mouse=ni			
 ":syntax on			"syntax highlight
 ":set shiftwidth=4		">> will indent 4 CH
 ":set tabstop=8			"while tab will indent 8,don't change this value
-":				"otherwise will get much trouble!
+"":				"otherwise will get much trouble!
 ":set expandtab
-"set udf
-"nn ,sa /[^\d0-\d127]
+":set udf
+":nn ,sa /[^\d0-\d127]
 ""copy selected text (ctrl-c), originally a not-so-useful key in vim
 ":vmap <C-c> "+y"*y
 ":vmap <A-c> "*y
 ""Paste clipboard contents (ctrl-p), originally a not-so-useful key in vim
 ":nnoremap <C-p> "+p
-":nn ,sa /[^\d0-\d127]
+":map ,dE :perldo s/(^\s*#[^!].*)//g<CR> :%s/^[\ \t#]*\n//g<CR>:nohls<CR>
+"":map ,dE :g/\v^\s*#([^!]|$)|^\s*$/d
+"map <UP> <C-y>
+"map <DOWN> <C-e>
+"map <left> zh
+"map <right> zl
+"let g:lasttab = 1
+"au TabLeave * let g:lasttab = tabpagenr()
+"function! s:switch()
+"  if tabpagenr("$") > 1
+"    exe "tabnext" g:lasttab
+"  else
+"    "without this, any change in a buffer will 
+"    "generate a warning before switch to other buffer
+"    set hidden
+"    b #
+"  endif
+"endfunction
+"noremap <silent> ,l :call <SID>switch()<enter>
 "
 ""others {{{2
 ""(2013-12-23) for perl fold, doesn't work, don't understand
@@ -390,6 +425,8 @@ let &cpo = s:save_cpo | unlet s:save_cpo
 "let sh_fold_enabled=1
 "let perl_extended_vars=1
 "let perl_sync_dist=250
+"colorscheme koehler
+"map ,de :g/\s*#[^!]\|\s*#$\|^\s*$/d
 
 function! TogglePaste()
     if (&paste == 0)
@@ -419,6 +456,8 @@ function! ToggleSyntax()
         let g:togglesyntax=1
     else
 	syntax sync minlines=150
+        "use large number anyway in power PC, (Tue, Jan 16, 2018  7:05:26 AM) 
+	syntax sync minlines=2500
         let g:togglesyntax=0
     endif
 endfu
@@ -541,7 +580,7 @@ set writebackup			"delete backup after write
 "E363: pattern uses more memory than 'maxmempattern'
 "Type  :quit<Enter>  to exit Vim
 "
-set maxmempattern=20000
+set maxmempattern=200000
 
 "speed up asciidoc2 highlight, seems better
 "syntax sync minlines=100
@@ -619,6 +658,10 @@ set nospell
 
 
 "my own maps {{{1
+"
+"preconfigured macro content to convert epoch time, use register q and a
+let @q = '0wwww"ay10lcw=strftime("%T", @a)j'
+
 "not working
 "let helptags=$VIM."/vimfiles/doc"
 "set helplang=cn
@@ -692,7 +735,12 @@ nmap <C-w><C-o> <C-w>o
 " 1) shebang line), 
 " 2) .."..#..
 "then remove empty lines, and the lines with only # (tested)
-map ,dE :perldo s/(^\s*#[^!].*)//g<CR> :%s/^[\ \t#]*\n//g<CR>:nohls<CR>
+map ,dE :perldo s/(^\s*[#"][^!].*)//g<CR> :%s/^[\ \t#"]*\n//g<CR>:nohls<CR>
+map ,de :g/\s*#[^!]\\|\s*#$\\|^\s*$/d
+
+"more general way (remove dependent on perl)
+"but the "map" does not work: E492 not an editor command
+"map ,dE :g/\v^\s*#([^!]|$)|^\s*$/d
 
 "clear empty lines (including those containing spaces/tabs)
 vn ,de :s/^[\ \t]*\n//g<CR>:nohls<CR>
@@ -1032,8 +1080,9 @@ nn zi zi<C-L>
 
 "statusline {{{2
 
-"a more informative status line
-set statusline=%F%m%r%h%w\ [FMT=%{&ff}]\ [TP=%Y]\ [ASC=\%03.3b]\ [X=\%02.2B]\ [POS=%04l,%04v]\ [%p%%]\ [LEN=%L]
+"disable this to test with vim-airline
+""a more informative status line
+"set statusline=%F%m%r%h%w\ [FMT=%{&ff}]\ [TP=%Y]\ [ASC=\%03.3b]\ [X=\%02.2B]\ [POS=%04l,%04v]\ [%p%%]\ [LEN=%L]
 
 " A statusbar function, that provides a visual scrollbar (courtesy of A.Politz)
 func! STL()
@@ -1062,7 +1111,8 @@ hi def link User2 DiffDelete
 
 "disable this under cygwin - cursor lag issue
 if !has("win32unix")
-    set stl=%!STL()
+    "disable this and test with vim-airline plugin
+    "set stl=%!STL()
 endif
 
 "movetab:a-left/right: {{{2
@@ -1143,9 +1193,9 @@ set scrolloff=3
 nn n nzt
 nn N Nzt
 
-nn ,jf :set ft=jel<CR>
-nn ,jc :set ft=jec<CR>
-nn ,jz :set foldmethod=marker<CR>:set foldmarker=\ {,}<CR><c-l>
+nn ,fl :set ft=jel<CR>
+nn ,fc :set ft=jec<CR>
+nn ,fj :set foldmethod=marker<CR>:set foldmarker=\ {,},\ [,]<CR><c-l>
 
 "nn ,>  0/{<cr>mj%mu%jmj'ukmu>'j:nohls<cr>
 nn ,i  0/{<cr>ma%dd'addzc
@@ -1287,25 +1337,18 @@ map <S-F8> :let @" = expand("%:p")<enter>
 "no, it doesn't always work
 map <F9> <ESC>qqJjq@q
 
-
-"use s-arrow key to resize window
-
-nnoremap <S-right> <ESC><c-w>>
-nnoremap <S-left> <ESC><c-w><
-nnoremap <S-up> <ESC><c-w>+
-nnoremap <S-down> <ESC><c-w>-
-
 "for vim under tmux
 nnoremap ^[[1;2D <ESC><c-w>>
 nnoremap ^[[1;2C <ESC><c-w><
 nnoremap ^[[1;2A <ESC><c-w>+
 nnoremap ^[[1;2B <ESC><c-w>-
 
-
-"sometime not working(e.g, from ssh,or tmux)
-nnoremap <S-right> <ESC><c-w>>
-"map <S-left> <ESC>gT<CR>
-nnoremap <S-left> <ESC><c-w><
+"use s-arrow key to resize window
+"(2018-03-13) with ,h and ,H for same goal, maybe use this to scroll quick horizontally
+"nnoremap <S-right> <ESC><c-w>>
+"nnoremap <S-left> <ESC><c-w><
+nnoremap <S-right> <ESC>zL
+nnoremap <S-left> <ESC>zH
 nnoremap <S-up> <ESC><c-w>+
 nnoremap <S-down> <ESC><c-w>-
 
@@ -1331,7 +1374,8 @@ nmap <silent> <C-F3> :call ToggleSketch()<CR>
 :amenu <silent> Tabs.&Next :tabnext<cr>
 :amenu <silent>Tabs.&Previous :tabprevious<cr>
 
-:match ErrorMsg /\%3500v.\+/
+"this cause long lines become VERY slow
+":match ErrorMsg /\%3500v.\+/
 
 :set cursorline		"mark curr line (with a underline)
 "set cursorcolumn		"mark curr column
@@ -1394,6 +1438,11 @@ endfunction
 "text into "* register,making normal cut&paste in single file painful
 "this breaks the vimwiki visual mode selection feature
 ":set clipboard=unnamed,autoselect,exclude:cons\\\|linux
+
+"for windows vim, copy into clipboard
+if has('win32')
+    set clipboard=unnamed
+endif
 
 
 "remove options from the sessionoptions list, make vimrc changes also apply to
@@ -1532,9 +1581,15 @@ nn ,aq o<c-o>0
 	\<esc>2k
 
 "insert blocks {{{3
-nn ,al 0o----<cr><cr>----<cr><esc>k
-nn ,aL 0o....<cr><cr>....<cr><esc>k
-nn ,as 0o****<cr><cr>****<cr><esc>k
+nn ,al 0o----<cr>----<cr><esc>k
+"(2018-02-21) this might be more frequently used
+nn ,al {i----<esc>}i----<esc>
+vn ,al mboma<esc>O<esc>0i----<esc>'bo<esc>0i----<esc>gvo
+
+nn ,aL 0o....<cr>....<cr><esc>k
+nn ,as 0o****<cr>****<cr><esc>k
+
+nn ,ai 0dwwcw::<esc>A<BS>[]<esc>
 
 nn ,am o<c-o>0
     	    \ifdef::basebackend-html[[subs="quotes"]]
@@ -1975,7 +2030,8 @@ map ,aH :w !asciidoctor
 "    :exec "normal o<esc>O![topo]({{ site.BASE_PATH }}/images/topo-" . case . ".png \"topo\")"
 "endfunc
 
-map ,ai :w !shaape -o ~/juniperblog/images/topo-.png -s 0.6 -&
+"this is not frequently used anymore (2017-10-16) 
+"map ,ai :w !shaape -o ~/juniperblog/images/topo-.png -s 0.6 -&
 "map ,ai :w !shaape -o /mnt/public_html/myblog/images/topo-temp.png -s 0.8 -&
 
 "phaseII: user command, with arguments {{{4
@@ -2244,9 +2300,14 @@ if !exists('g:jekyll_path')
 endif
 
 "constant: blog2
-if !exists('g:jekyll_path2')
-    let g:jekyll_path2="~/mytest-project/jekyll-site/blog.clone"
-    let g:jekyll_path2="~/mytest-project/jekyll-site/juniperblog"
+if !exists('g:jekyll_path3')
+    " let g:jekyll_path2="~/mytest-project/jekyll-site/blog.clone"
+    " let g:jekyll_path2="~/mytest-project/jekyll-site/juniperblog"
+    " running new jekyll over cygwin (2018-02-18) 
+    " this one has no tags
+    " let g:jekyll_path2="~/mytest-project/jekyll-site/juniperblog2"
+    " this one has tags
+    let g:jekyll_path3="~/mytest-project/jekyll-site/juniperblog3"
 endif
 
 "save the path change
@@ -2493,9 +2554,9 @@ function! A2J(...) range "{{{4
             let g:jekyll_blogid=1
             let path=g:jekyll_path
         elseif path=='n'
-            let path=input("use default/previous path?" . '[' . g:jekyll_path2 . ']' . "(y/<NEW PATH>):",'y')
+            let path=input("use default/previous path?" . '[' . g:jekyll_path3 . ']' . "(y/<NEW PATH>):",'y')
             if path=='y'
-                let path=g:jekyll_path2
+                let path=g:jekyll_path3
                 let g:jekyll_blogid=2
                 let g:jekyll_upload='rsync'
             endif
@@ -2609,7 +2670,7 @@ function! JekyllGit(commitmsg)
         let current_path=g:jekyll_path
     elseif current_blogid==2
         let g:jekyll_upload='rsync'                 "set proper upload method
-        let current_path=g:jekyll_path2
+        let current_path=g:jekyll_path3
     else
     endif
 
@@ -2645,7 +2706,7 @@ function! JekyllGit(commitmsg)
         let upload="
         \rsync --delete -qrlczPp --chmod=a+rwx,g+rx,o+r " . 
         \current_path . 
-        \"/_site/ pings@svl-jtac-tool02:public_html/myblog/"
+        \"/_site/ pings@svl-jtac-tool02:public_html/blog/"
 
         "verbose:       rsync --delete -vvrlczP " . 
         "quiet:         rsync --delete -qrlczP " . 
@@ -2713,7 +2774,7 @@ function! JekyllSetBlogID(blogid) "{{{4
         let g:jekyll_currentpath=g:jekyll_path
         let g:jekyll_upload="github"
     elseif g:jekyll_blogid==2
-        let g:jekyll_currentpath=g:jekyll_path2
+        let g:jekyll_currentpath=g:jekyll_path3
         let g:jekyll_upload="rsync"
     else
         let g:jekyll_currentpath=g:jekyll_path
@@ -2839,8 +2900,8 @@ function JekyllList()   "{{{5
     "exe "vnew " . g:jekyll_path . "/_posts"
     exe "edit " . g:jekyll_path . "/_posts"
   elseif g:jekyll_blogid==2
-    "exe "vnew " . g:jekyll_path2 . "/_posts"
-    exe "edit " . g:jekyll_path2 . "/_posts"
+    "exe "vnew " . g:jekyll_path3 . "/_posts"
+    exe "edit " . g:jekyll_path3 . "/_posts"
   else
   endif
 endfunction
@@ -3012,12 +3073,13 @@ endfunction
 command! -range=% -nargs=* JekyllPostRange :<line1>,<line2>call JekyllPostRange(<q-args>)
 
 " Initialization {{{4
-augroup jekyllPluginDetect
-  autocmd!
-  autocmd BufNewFile,BufRead * call s:Detect(expand("<afile>:p"))
-  autocmd VimEnter * if expand("<amatch>") == "" && !exists("b:jekyll_root") | call s:Detect(getcwd()) | endif
-  autocmd Syntax html,xml,markdown,textile if exists("b:jekyll_root") | syn match Comment /\%^---\_.\{-}---$/ contains=@Spell | endif
-augroup END
+"(2018-03-01) avoid VimEnter to speed up vim start, these does not seem to be useful
+"augroup jekyllPluginDetect
+"  autocmd!
+"  autocmd BufNewFile,BufRead * call s:Detect(expand("<afile>:p"))
+"  autocmd VimEnter * if expand("<amatch>") == "" && !exists("b:jekyll_root") | call s:Detect(getcwd()) | endif
+"  autocmd Syntax html,xml,markdown,textile if exists("b:jekyll_root") | syn match Comment /\%^---\_.\{-}---$/ contains=@Spell | endif
+"augroup END
 
 " }}}1
 
@@ -3151,6 +3213,100 @@ endfunction
 
 
 "plugin tuning options {{{1
+"
+"vim-plug {{{2
+"install plugins automatically
+"
+"install vim-plug plugin itself
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  if !executable('ctags')
+      silent !apt-get install ctags
+  endif
+  if !executable('git')
+      silent !apt-get -y install git
+  endif
+endif
+
+"automatically install needed plugins
+"call plug#begin('~/.vim/bundle')
+"in case git is not installed, use silent to surpress error msgs
+call plug#begin('~/.vim/bundle')
+
+Plug 'vim-scripts/VOoM'
+
+"optional
+Plug 'plasticboy/vim-markdown'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'ervandew/supertab'
+Plug 'mattn/webapi-vim'
+Plug 'mattn/gist-vim'
+
+"more optional
+Plug 'junegunn/vim-easy-align'
+Plug 'godlygeek/tabular'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'vim-scripts/DrawIt'
+Plug 'vim-scripts/VisIncr'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-easytags'
+Plug 'ianva/vim-youdao-translater'
+Plug 'easymotion/vim-easymotion'
+
+Plug 'shougo/vimshell.vim'
+Plug 'shougo/vimproc.vim'
+Plug 'vim-scripts/taglist.vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'klen/python-mode'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'powerline/fonts'
+Plug 'tpope/vim-fugitive'
+Plug 'vim-scripts/MPage'
+"Plug 'Valloric/YouCompleteMe'
+
+call plug#end()
+
+"matchit {{{2
+"(2018-02-05) 
+"make % works the best using default matchit plugin(not loaded by default)
+"this command seems not backward compatible...
+"packadd! matchit
+"
+"" open-browser {{{2
+"(Sat, Oct 14, 2017  4:19:56 PM) 
+" great, put cursor under a link, gx to open it in browser
+" issue: does not work for markdown if installed the markdown plugin
+let g:netrw_nogx = 1 " disable netrw's gx mapping.
+nmap gx <Plug>(openbrowser-smart-search)
+vmap gx <Plug>(openbrowser-smart-search)
+
+" vim-gist {{{2
+"
+let g:gist_browser_command = 'chrome %URL% &'
+" (2018-02-01) this works
+if has("win32unix")
+    let g:gist_browser_command = 'cygstart %URL% &'
+    "let g:gist_browser_command = 'w3m %URL%'
+endif
+let g:gist_open_browser_after_post = 1
+
+if executable('pbcopy')
+    let g:gist_clip_command = 'pbcopy'
+elseif executable('xclip')
+    let g:gist_clip_command = 'xclip -selection clipboard'
+elseif executable('putclip')
+    let g:gist_clip_command = 'putclip'
+endif
+
+let g:gist_show_privates = 1
+let g:gist_post_private = 1
+let g:gist_detect_filetype = 1
 
 "indent_guides {{{2 
 "The default mapping to toggle the plugin is `<Leader>ig` 
@@ -3162,10 +3318,12 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
 
 
 "pymode {{{2
-let g:pymode = 0
+let g:pymode = 1
 
 "enable code check by default
 let g:pymode_lint = 1
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_bind = '<leader>b'
 
 let g:pymode_rope = 0 
 let g:pymode_rope_lookup_project = 0 
@@ -3231,6 +3389,8 @@ nn ,bs :call PerformanceTest('stop')<cr>
 "not working
 "in <C-p> <Plug>(vimshell_previous_prompt)
 "let g:vimshell_cd_command='TabpageCD'
+let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
+
 
 "supertab--- {{{2
 "
@@ -3495,18 +3655,28 @@ command! TNoName call s:RemoveTabName()
 "markdown--- {{{2
 
 "for https://github.com/plasticboy/vim-markdown, removed(slow)
-"let g:vim_markdown_frontmatter=1
+let g:vim_markdown_frontmatter=1
 
 "vim-airline--- {{{2
+"
+let g:airline_powerline_fonts = 1
+let g:airline_left_sep='>'
+let g:airline_right_sep='<'
 "disable this plugin
 "let g:loaded_airline = 1
 "let g:airline_theme             = 'powerlineish'
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#tab_nr_type = 1
-let g:airline#extensions#bufferline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
+
+"let g:airline#extensions#branch#enabled = 1
+"let g:airline#extensions#syntastic#enabled = 1
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#tab_nr_type = 1
+"let g:airline#extensions#bufferline#enabled = 1
+"let g:airline#extensions#tabline#buffer_nr_show = 1
+
+"testing (2017-05-02) 
+let g:airline_inactive_collapse=1
+"let g:airline#extensions#tabline#show_buffers = 1
+"let g:airline#extensions#tabline#fnametruncate = 0
 
 "bash-support--- {{{2
 "merged in vim-plugin, auto pathogen ized
@@ -3553,7 +3723,7 @@ nnoremap <silent> ,tb :TagbarToggle<CR>
 "only display tags of current file and fold all others
 let Tlist_File_Fold_Auto_Close = 1
 "display only tags of current file
-"let Tlist_Show_One_File = 1
+let Tlist_Show_One_File = 1
 "exit vim when only taglist window left
 let Tlist_Exit_OnlyWindow = 1
 "process tag even if no taglist win
@@ -3573,7 +3743,9 @@ let g:easytags_updatetime_autodisable = 1
 "	let b:easytags_auto_highlight = 0
 
 "Hope this helps,
-
+"(2018-02-28) to resolve slow/hanging issue
+let g:easytags_async=1
+let g:easytags_auto_highlight=0
 
 
 "Voom {{{2
@@ -3595,6 +3767,7 @@ let g:voom_ft_modes = {'asciidoc': 'asciidoc',
     \'markdown': 'markdown',
     \'md': 'markdown',
     \'mkd': 'markdown',
+    \'python': 'python',
     \}
 "let g:voom_default_mode = 'asciidoc'
 
@@ -3901,6 +4074,12 @@ let g:utl_cfg_hdl_mt_application_msword="VIM"
 "let utl_opt_verbose=1 
 
 "pathogen--- {{{2
+"auto install
+if empty(glob('~/.vim/autoload/pathogen.vim'))
+  silent !curl -fLo ~/.vim/autoload/pathogen.vim --create-dirs
+    \ https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+endif
+"
 "(2016-03-10) disable this, for unknown reason it freeze some asciidoc on save
 execute pathogen#infect()
 
@@ -4128,14 +4307,30 @@ nn ,cc :call MyConqueTermRepeat2("pwd",2,1)
 "(2013-12-06) trying to disable (but no success) to speed up conqterm
 let g:__XPTEMPLATE_VIM = 100
 
-"netrw and nerd_tree--- {{{2
+"netrw {{{2
 
 let g:netrw_browsex_viewer= "gnome-open"
+
+if has("win32unix")
+    let g:netrw_browsex_viewer= "/cygdrive/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
+    let g:netrw_browsex_viewer= 'cygstart'      "does not work with fresh install in new pc(2018-01-13) 
+endif
+
+function! HandleURL()
+  let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
+  echo s:uri
+  if s:uri != ""
+    silent exec "!open '".s:uri."'"
+  else
+    echo "No URI found in line."
+  endif
+endfunction
+map <leader>u :call HandleURL()<cr>
 
 "use the tree style as default listing style.
 let g:netrw_liststyle= 4
 
-let loaded_nerd_tree=1 		"don't load nerd_tree plugin
+"let loaded_nerd_tree=1 		"don't load nerd_tree plugin
 				"so netrw will be used
 "let g:loaded_netrw       = 1 	"to block netrw from be used
 "let g:loaded_netrwPlugin = 1
@@ -4151,7 +4346,13 @@ let loaded_nerd_tree=1 		"don't load nerd_tree plugin
 "list (unless |g:netrw_dirhistmax| is zero; by default, it's ten).  With the
 let g:netrw_dirhistmax = 50
 
-
+"nerdtree {{{2
+"these does not work, simply change the source code plugin/nerd_tree.vim
+"let g:NERDTreeMapOpenSplit 's'
+"let g:NERDTreeMapPreviewSplit 'gs'
+"let g:NERDTreeMapOpenVSplit 'v'
+"let g:NERDTreeMapPreviewVSplit 'gv'
+"
 "Mark--- {{{2
 "By default, the Mark plug indeed adds the highlighted text to both input and
 "search history.By default, any marked words are also added to the search (/)
@@ -4165,6 +4366,8 @@ let g:mwHistAdd = ''
 let html_number_lines = 0 
 let html_use_css = 1  "Use stylesheet instead of inline style
 "let html_no_pre = 1  "don’t wrap lines in
+"(2018-02-01) this becomes necessary, not sure why previously no need...
+let g:html_dynamic_folds = 1
 
 "by vimim author, this can be used to retain the vim "fold" also into HTML!
 let $tohtml = "~/.vim/syntax/2html.vim"
@@ -4474,12 +4677,135 @@ map <S-F10> :%s/ge-9\/0\/0/em1/g<CR>:%s/ge-9\/0\/1/em2/g<CR>:%s/ge-9\/0\/2/em3/g
 "map <C-c> "+y
 "map <C-S-c> "*y
 "map <C-S-v> "*p
-map oo o<Esc>k<esc>
-map OO O<Esc>j<esc>
 "n/w for consolevim, w/ for gvim
 map <M-o> o<Esc>k
 
 "testing, may not working {{{1 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+"colorcheme changing {{{2
+"testing changing colorscheme: begin===================================
+" Change the color scheme from a list of color scheme names.
+" Version 2010-09-12 from http://vim.wikia.com/wiki/VimTip341
+" Press key:
+"   F8                next scheme
+"   Shift-F8          previous scheme
+"   Alt-F8            random scheme
+" Set the list of color schemes used by the above (default is 'all'):
+"   :SetColors all              (all $VIMRUNTIME/colors/*.vim)
+"   :SetColors my               (names built into script)
+"   :SetColors blue slate ron   (these schemes)
+"   :SetColors                  (display current scheme names)
+" Set the current color scheme based on time of day:
+"   :SetColors now
+if v:version < 700 || exists('loaded_setcolors') || &cp
+  finish
+endif
+
+let loaded_setcolors = 1
+" colorscheme names that we use to set color
+let s:mycolors = ['koehler', 'slate', 'torte', 'darkblue', 'delek', 'murphy', 'elflord', 'pablo', 'desert']  
+
+" Set list of color scheme names that we will use, except
+" argument 'now' actually changes the current color scheme.
+function! s:SetColors(args)
+  if len(a:args) == 0
+    echo 'Current color scheme names:'
+    let i = 0
+    while i < len(s:mycolors)
+      echo '  '.join(map(s:mycolors[i : i+4], 'printf("%-14s", v:val)'))
+      let i += 5
+    endwhile
+  elseif a:args == 'all'
+    let paths = split(globpath(&runtimepath, 'colors/*.vim'), "\n")
+    let s:mycolors = uniq(sort(map(paths, 'fnamemodify(v:val, ":t:r")')))
+    echo 'List of colors set from all installed color schemes'
+  elseif a:args == 'my'
+    let c1 = 'default elflord peachpuff desert256 breeze morning'
+    let c2 = 'darkblue gothic aqua earth black_angus relaxedgreen'
+    let c3 = 'darkblack freya motus impact less chocolateliquor'
+    let s:mycolors = split(c1.' '.c2.' '.c3)
+    echo 'List of colors set from built-in names'
+  elseif a:args == 'now'
+    call s:HourColor()
+  else
+    let s:mycolors = split(a:args)
+    echo 'List of colors set from argument (space-separated names)'
+  endif
+endfunction
+
+command! -nargs=* SetColors call s:SetColors('<args>')
+
+" Set next/previous/random (how = 1/-1/0) color from our list of colors.
+" The 'random' index is actually set from the current time in seconds.
+" Global (no 's:') so can easily call from command line.
+function! NextColor(how)
+  call s:NextColor(a:how, 1)
+endfunction
+
+" Helper function for NextColor(), allows echoing of the color name to be
+" disabled.
+function! s:NextColor(how, echo_color)
+  if len(s:mycolors) == 0
+    call s:SetColors('all')
+  endif
+  if exists('g:colors_name')
+    let current = index(s:mycolors, g:colors_name)
+  else
+    let current = -1
+  endif
+  let missing = []
+  let how = a:how
+  for i in range(len(s:mycolors))
+    if how == 0
+      let current = localtime() % len(s:mycolors)
+      let how = 1  " in case random color does not exist
+    else
+      let current += how
+      if !(0 <= current && current < len(s:mycolors))
+        let current = (how>0 ? 0 : len(s:mycolors)-1)
+      endif
+    endif
+    try
+      execute 'colorscheme '.s:mycolors[current]
+      break
+    catch /E185:/
+      call add(missing, s:mycolors[current])
+    endtry
+  endfor
+  redraw
+  if len(missing) > 0
+    echo 'Error: colorscheme not found:' join(missing)
+  endif
+  if (a:echo_color)
+    echo g:colors_name
+  endif
+endfunction
+
+nnoremap ,ci :call NextColor(1)<CR>
+nnoremap ,cI :call NextColor(-1)<CR>
+nnoremap ,cr :call NextColor(0)<CR>
+
+" Set color scheme according to current time of day.
+function! s:HourColor()
+  let hr = str2nr(strftime('%H'))
+  if hr <= 3
+    let i = 0
+  elseif hr <= 7
+    let i = 1
+  elseif hr <= 14
+    let i = 2
+  elseif hr <= 18
+    let i = 3
+  else
+    let i = 4
+  endif
+  let nowcolors = 'elflord morning desert evening pablo'
+  execute 'colorscheme '.split(nowcolors)[i]
+  redraw
+  echo g:colors_name
+endfunction
+"testing changing colorscheme: end===================================
+"
 "
 ":nnoremap <leader>g :grep <cword> .<cr>
 "function! stopwatch()
@@ -4615,7 +4941,8 @@ function! TabPos_ActivateBuffer(num)
      exe "map <M-0> :call TabPos_ActivateBuffer(10)<CR>"  
  endfunction  
    
- autocmd VimEnter * call TabPos_Initialize() 
+"(2018-03-01) avoid vimEnter to speedup
+" autocmd VimEnter * call TabPos_Initialize() 
 
 "this doesn't work as well
 :nn <M-1> 1gt
