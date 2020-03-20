@@ -1,4 +1,5 @@
-"
+"https://gist.github.com/pinggit/778bce339a58691af257288bde383aa5
+"GistID: 778bce339a58691af257288bde383aa5
 "summary {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "key mappings
@@ -15,15 +16,21 @@
 ""S-left/right:        	scroll a screen horizontally
 "S-up/down:            	resize window height
 "no in this file
+"
 "Ctrl-left/right/up/down: Voom: move the node left/right/up/down
 " 			best way is to use \-lrud instead
-"
 "C-left,right 		scroll left half,right screen
-" 			(since conflict with Voom, might not work)
+" 			(conflicting with Voom, might not work)
+" 			(conflicting with tmux, resize pane, might not work)
 "
 "no in this file
 "ctrl-alt-left/right:   vim: go prev/next tab (looks only in xcfe?)
 " 			better use Ngt instead
+" 			conflicting with tmux, move window
+"
+"shift-alt-left/right:  go left/right tab
+"                       (2018-06-16) hard to squeeze files in one tabline
+"                       need a way to quickly switch
 "
 "func keys: {{{2
 "C-F2		toggle guioptions
@@ -102,37 +109,57 @@
 ",cv 		Conqterm, send visual text to recent conqterm buffer
 "                   (disabled, not quite oftenly used)
 "               start conqterm in split window(vertically) 
-",cs            start conqterm in split window(herizontally)
 ",ct            start conqterm in new tab
+",cs            start conqterm in split window(herizontally)
+",cp            :CtrlP
+",cm            :CtrlPMRU<CR>
+",cb            :CtrlPBuffer
 
 
 ",di 		insert a timestamp in curr cursor place
 ",da 		append a timestamp in curr cursor place
 ",Di 		insert a timestamp in curr cursor place
 ",Da 		append a timestamp in curr cursor place
-",dE            clear all comment lines, except shebang line, use perldo
+",dE            clear all comment lines(except shebang line), and blank lines, use perldo
 ",de            same, but use ;g , more portable
-",de            visual mode: remove just empty lines (prev C-F7)
+"               visual mode: remove just empty lines (prev C-F7)
+",dw            delete whitespaces for a line
 ",do            ]cdo
 ",dp            ]cdp
 
 ",eb 		encrypt current para (vip) with base64
-",eB            de-encrypt
+",eB              de-encrypt ...
+",ev              encrypt current visual selection
 ",em            mapping for keyword searching cmd from junose command captures
 ",en            mapping for keyword searching cmd from junose command captures
+"
+",es            show :leetcode show x (2020-02-05) 
+",eS            submit :leetcode submit(2020-02-05) 
+",et            test :leetcode test(2020-02-05) 
+",eT            test :leetcode test -t ''(2020-02-05) 
+",ea            answer :leetcode show x --solution -l python3
+"
+",Es            same as ,eX, but in qfix win
+",ES            same as ,eX, but in qfix win
+",Et            same as ,eX, but in qfix win
+",ET            same as ,eX, but in qfix win
+",Ea            same as ,eX, but in qfix win
+"
 
 ",fo            set format=+a
 ",fl 		set ft=jel
 ",fc 		set ft=jec
 ",fj            fold junos config
 
+",gi            :Gist -p
 ",gr 		recursive grep operator
 ",gp            get pr
 ",gq            v  ,gq           :s/\s\+/ /g<CR>gvgq
 "               Last set from ~/.vim/plugin/justify.vim
 ",gQ 
 "
-",h             :vertical resize +10
+",hh            :vertical resize +10
+",hi            :vertical resize 86 (long enough just to show the cc line)
 ",H             :vertical resize -10
 "
 ",i             flexible map, for temporary use
@@ -146,12 +173,14 @@
 "
 ",jb            :JekyllBuild<CR>
 ",jg            jekyll FU git external commands
+",jh            jupytext md to ipynb and to html
 ",ji            select blog id
 ",jl            :JekyllList<CR>
 ",jL            :ranger
 ",js            jekyll from scratch/start (no pre-selected content), new
 "               buffer, no tab.  ->CMD:JekyllPost->FUNC:JekyllPost
 "               v: JekyllPostRange<CR>
+",jS            jupytext sync
 ",jp            :JekyllPostAllTab<CR>
 "               nn: use whole current file as content of new post (in new tab)
 "               vn: use selected text as content of new post(in new tab)
@@ -163,6 +192,7 @@
 ",K             :resize -10
 ",l             switch between current & last tab
 ",ma            mark arrow (same as F7)
+",mA            markdown to asciidoc header
 ",mX            markdown
 ",mc            markdown insert (html) comment
 ",mt            markdown toc (muruku)
@@ -174,8 +204,8 @@
 "
 ",nc            neocompletetoggle
 ",nf            no files: turn off all additional files: nobackup, noudf
+",nn            toggle nerdtree
 ",o             visual select the command output
-",tp             :TabMessage CMD - put ex command capture to a new tab buffer
 ",qp            query-pr
 ",qt            quit translation win(dict)
 ",qv|vV         quit the NR window pairs caused by vv(not working yet)
@@ -183,6 +213,7 @@
 ",qq            g:/^\S/gqq (not difined yet)
 ",r 		call ranger(console vim only)
 ",R 		call !ranger-cd(console vim only), not working yet
+",sl            :shell
 ",st            :VimShellTab
 ",ss            VimShellCreate, split
 ",sv            VimShellCreate, split vertially
@@ -190,17 +221,28 @@
 "                :shell
 ",S 		toggle syntax=ON/OFF (enable/disable syn hl only for curr buff)
 
-",ta 		type of file: set ft=asciidoc|set conceallevel=0
-",tb            :TagBarToggle
-",tA 		type of file: set ft=asciidoc2
-",tc            toggle colorcolumn
-",tC            set ft=tcl
-",td            toggle drawit line style
-",tf 		toggle asciidoc foldexpr
-",th            toggle syntax highlight
 ",p 		toggle set paste/nopaste
+",pa            :PymodeLintAuto
+",pl            insert python block ```python ```
+",pc            insert python block comment """ """
+",pr            vim-repl :REPLToggle
+",pb            vim-repl :add breakpoint and continue until this line
+"                         pdb b and c
+",pn            vim-repl :next line (pdb n)
+",ps            vim-repl :step into a function (pdb s)
+
 ",pp            work with ,yy, paste from file
 ",PP            same, but use P instead of p
+
+",tA 		type of file: set ft=asciidoc2
+",ta 		type of file: set ft=asciidoc|set conceallevel=0
+",tb            :TagBarToggle
+",tc            toggle colorcolumn
+",td            toggle drawit line style
+",tf 		toggle asciidoc foldexpr
+",tg            :Tabularize based on space
+",th            toggle syntax highlight
+",tp             :TabMessage CMD - put ex command capture to a new tab buffer
 ",ti            toggle vimim Punctuation
 ",tr            toggle wrap
 ",ts		translate with sdcv(startdic console), horizontally
@@ -209,7 +251,6 @@
 ",tt            :TlistToggle
 ",tw 		toggle textwidth (bet 0 and 80)
 ",tz 		toggle ZoomWin (disabled, use <c-w>o)
-
 ",tv 		type of file: set ft=vimwiki
 
 ",u 		:Utl
@@ -227,7 +268,11 @@
 ",ws             wiki split and edit linked page (disabled, no much use)
 ",wv            wiki vsplit and edit linked page
 ",yd            youdao
-",yy            youdao
+",yD            youdao
+",yp            call yapf to format current python file
+"
+",yy            v: save in a temp file, ,pp to read from temp file and paste
+",zl            fold CLI logs
 "               v: copy and save into file
 "
 ",>             indent just pasted texts
@@ -238,14 +283,17 @@
 
 ";leading {{{2
 
-"keys {{{2
+"double keys {{{2
 "
 ",,             escape
 "vv             VoomToggle
 "aa             voom built-in
 "AA             voom built-in
+"oo/OO          just open a new line w/o entering ins mode(n/w cvim;w/ "gvim)
+
 "keys: {{{2
 "alt-o 			just open a new line w/o entering ins mode(n/w cvim;w/ "gvim)
+"alt-q                  exit insert mode from terminal
 "C-c,C-p  		"+y and "+p
 "a-c,a-p 		"*y and "*p
 
@@ -261,7 +309,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "fold CLI outputs,not working
 "map ,je syn region erxLog start=/^\(\S\S\+.\{0,45}\S#\s*\S\+\|slot \d\d\=->\S\+\|->.\+\|\*-\*-\*-\*-\*-\)/ end=/^\(\S\+.\{0,45}\S#\|^#$\|->\|slot \d\d\=->\|\*-\*-\*-\*-\*-\)/me=s-1 fold
-
+"(2018-10-06) simple CLI log fold
+nmap ,zl :syn region erxLog start=/^\(\(#\|\$\)\s*\S\+\)/ end=/^\(#\s*\S\+\)/me=s-1 fold
 "common config {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "must haves {{{2
@@ -358,6 +407,38 @@ if !hasmapto("<Plug>VLToggle")
 endif
 let &cpo = s:save_cpo | unlet s:save_cpo
 
+nmap oo o<Esc>k<esc>
+nmap OO O<Esc>j<esc>
+
+if v:version >= 800
+    "go back to normal mode in terminal, not working
+    "tnoremap <a-q> <c-\><c-N>
+    "tnoremap <a-q> <c-w>N
+
+    "this work fine, but bans a lot of shell features (like scroll old cli, etc)
+    let g:ctrwo = 0
+    tnoremap <esc><esc> <C-W>N
+    tmap <c-w>o <c-w>N<c-w>oi
+
+    function! Ctrlwo()
+        if g:ctrwo == 0
+            let g:ctrwo=1
+            normal <c-w>N<c-w>oi
+            echo "zoomed in!"
+        else
+            let g:ctrwo=0
+            normal <c-w>N<c-w>oi
+            echo "zoomed out!"
+        endif
+    endfu
+    "this does not work yet
+    "tnoremap <c-w>o :call Ctrlwo()<CR>
+
+    if v:version > 800
+        set termwinscroll=100000000000
+    endif
+endif
+
 ""must have mini--- {{{2
 ""  for fast paste into other machines
 ""copy and paste below lines in new vim ex mode
@@ -418,6 +499,26 @@ let &cpo = s:save_cpo | unlet s:save_cpo
 "endfunction
 "noremap <silent> ,l :call <SID>switch()<enter>
 "
+""conditional map of h--- {{{2
+"
+""gmail thread map a key to "conditionally" override built-in behavior
+""disabled (2014-10-29) , often close buffers accidentally
+"function! <SID>Maph()
+"  "if cursor stays in leftmost[virtcol(".")==1] and upmost[line(".")==1] 
+"  "  corner of the buffer
+"  "if line(".") == 1 && virtcol(".") == 1
+"  if virtcol(".") == 1
+"  "this also works
+"  "if col(".") == 1
+"    "return ":q\r"
+"    "not only quit current win, but 'pairing' win, if has
+"    return ",qv"
+"  else
+"    return "h"
+"  endif
+"endfunction
+"nmap <expr> h <SID>Maph()
+"
 ""others {{{2
 ""(2013-12-23) for perl fold, doesn't work, don't understand
 "set foldlevelstart=2
@@ -426,7 +527,17 @@ let &cpo = s:save_cpo | unlet s:save_cpo
 "let perl_extended_vars=1
 "let perl_sync_dist=250
 "colorscheme koehler
-"map ,de :g/\s*#[^!]\|\s*#$\|^\s*$/d
+"nn ,de g/\s*#[^!]\|\s*#$\|^\(\s*\|\%u00a0\)$/d
+
+"(2019-09-21) big file syntax highlight issue finally resolved.
+"https://github.com/vim/vim/issues/2790
+set redrawtime=50000
+
+if has('gui_running')
+    set background=light
+else
+    set background=dark
+endif
 
 function! TogglePaste()
     if (&paste == 0)
@@ -544,9 +655,10 @@ endfu
 :nnoremap ,u :Utl<CR>
 
 "make vim remember longer history
-set history=1000
+set history=10000
 
-nn ,h :vertical resize +10<cr>
+nn ,hh :vertical resize +10<cr>
+nn ,hi :vertical resize 86<cr>
 nn ,H :vertical resize -10<cr>
 nn ,k :resize +10<cr>
 nn ,K :resize -10<cr>
@@ -602,7 +714,7 @@ function! ToggleSyntaxOption()
 endfunction
 "nn ,S :set syntax=ON<cr>
 nn ,S :call ToggleSyntaxOption()<CR>
-nn ,s :shell<CR>
+nn ,sl :shell<CR>
 
 "set encoding=cp936
 set lbr
@@ -644,7 +756,7 @@ set listchars+=precedes:<
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 
 "no spell check, make the color scheme clean
-set nospell
+"set nospell
 
 "runtime is a bit diff with source
 "here the path is based on 'runtimepath' var
@@ -658,9 +770,55 @@ set nospell
 
 
 "my own maps {{{1
-"
+
+"enter same folder as current file in buffer
+"great for NERDTreeToggle(2019-10-25) 
+"autocmd BufEnter * lcd %:p:h
+autocmd BufEnter * if &buftype != "terminal" | lcd %:p:h
+
+"leetcode cli {{{2
+"nn ,et :!leetcode test %<CR>
+"nn ,eT :!leetcode test % -t ''<left>
+"nn ,es :!leetcode submit %<CR>
+nn ,es :AsyncRun -save=1 -mode=term -pos=bottom -rows=15 -cols=40 -focus=0 leetcode show %:t:r:r<CR>
+nn ,et :AsyncRun -save=1 -mode=term -pos=bottom -rows=15 -cols=40 -focus=0 leetcode test %<CR>
+nn ,eT :AsyncRun -save=1 -mode=term -pos=bottom -rows=15 -cols=40 -focus=0 leetcode test % -t ''<left>
+nn ,eS :AsyncRun -save=1 -mode=term -pos=bottom -rows=15 -cols=40 -focus=0 leetcode submit %<CR>
+nn ,ea :AsyncRun -save=1 -mode=term -pos=bottom -rows=15 -cols=40 -focus=0 leetcode show %:t:r:r --solution -l python3 <CR>
+
+nn ,Es :AsyncRun -save=1 -focus=1 leetcode show %:t:r:r<CR>
+nn ,Et :AsyncRun -save=1 -focus=1 leetcode test %<CR>
+nn ,ET :AsyncRun -save=1 -focus=1 leetcode test % -t ''<left>
+nn ,ES :AsyncRun -save=1 -focus=1 leetcode submit %<CR>
+nn ,Ea :AsyncRun -save=1 -focus=1 leetcode show %:t:r:r --solution -l python3 <CR>
+
+
+"create folder on write {{{2
+"https://stackoverflow.com/questions/4292733/vim-creating-parent-directories-on-save
+"works fine. (2019-10-24) 
+function s:MkNonExDir(file, buf)
+    if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
+        let dir=fnamemodify(a:file, ':h')
+        if !isdirectory(dir)
+            call mkdir(dir, 'p')
+        endif
+    endif
+endfunction
+augroup BWCCreateDir
+    autocmd!
+    autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
+augroup END
+
+"(2019-06-07) fix auto-indent issue of original yaml ft. 
+"need to install vim-ansible plugin
+au BufNewFile,BufRead *.yaml set filetype=ansible
+
 "preconfigured macro content to convert epoch time, use register q and a
-let @q = '0wwww"ay10lcw=strftime("%T", @a)j'
+let @q = '0wwww"ay10lcw=strftime("%T", @a)
+j'
+"go left/right tab
+nn <s-a-left> gT
+nn <s-a-right> gt
 
 "not working
 "let helptags=$VIM."/vimfiles/doc"
@@ -668,61 +826,19 @@ let @q = '0wwww"ay10lcw=strftime("%T", @a)j'
 
 "nn qq :q<cr>
 
-"group all about colors together {{{2
-"highlighted with ColorColumn,Useful to align
-"long code.  Will make screen redrawing slower.
-"and looks annoying when not coding
-"set colorcolumn=80
+"modify selected text using combining diacritics {{{2
+"(2018-06-22)  to add e.g. like strikeout line in md list
+"http://vim.wikia.com/wiki/Create_underlines,_overlines,_and_strikethroughs_using_combining_characters
+command! -range -nargs=0 Overline        call s:CombineSelection(<line1>, <line2>, '0305')
+command! -range -nargs=0 Underline       call s:CombineSelection(<line1>, <line2>, '0332')
+command! -range -nargs=0 DoubleUnderline call s:CombineSelection(<line1>, <line2>, '0333')
+command! -range -nargs=0 Strikethrough   call s:CombineSelection(<line1>, <line2>, '0336')
 
-"set terminal color, def 8.
-"set t_Co doesnt work since it's a var,not option
-"let t_Co=256 			
-
-
-
-"this looks better than default (with which voom fold looks ugly)
-"colorscheme elflord
-"colorscheme molokai
-colorscheme default
-colorscheme koehler
-"this generate some warnings
-"colorscheme Tomorrow-Night-Bright 
-"colorscheme torte
-
-"to highlight all non-ascii
-"syntax match nonascii "[^\x00-\x7F]"
-"highlight nonascii guibg=Red ctermbg=2
-
-"(2013-02-26) 
-"toggling between default/koehler/mololai
-"a shortcut/quick way to do a complicated map but bypassing function calls
-map ,co :
-    \if g:colors_name == 'default' <Bar>
-        \:colorscheme koehler <Bar>
-    \elseif g:colors_name == 'koehler' <Bar>
-        \:colorscheme molokai <Bar>
-    \else <Bar>
-        \:colorscheme default <Bar>
-    \endif <Bar>
-    \<CR>
-
-"highlight column
-"http://www.vimer.cn/2012/05/vimgvim%E6%94%AF%E6%8C%81%E5%AF%B9%E9%BD%90%E7%BA%BF.html
-"highlight column of current cursor
-function! SetColorColumn()
-    let col_num = virtcol(".")
-    let cc_list = split(&cc, ',')
-    if count(cc_list, string(col_num)) <= 0
-        execute "set cc+=".col_num
-    else
-        execute "set cc-=".col_num
-    endif
+function! s:CombineSelection(line1, line2, cp)
+  execute 'let char = "\u'.a:cp.'"'
+  execute a:line1.','.a:line2.'s/\%V[^[:cntrl:]]/&'.char.'/ge'
 endfunction
-map ,tc :call SetColorColumn()<CR>
-
-map ,tC :set ft=tcl<CR>
-
-
+"
 
 
 "this will overide some good thing (like :cw)
@@ -735,9 +851,10 @@ nmap <C-w><C-o> <C-w>o
 " 1) shebang line), 
 " 2) .."..#..
 "then remove empty lines, and the lines with only # (tested)
-map ,dE :perldo s/(^\s*[#"][^!].*)//g<CR> :%s/^[\ \t#"]*\n//g<CR>:nohls<CR>
-map ,de :g/\s*#[^!]\\|\s*#$\\|^\s*$/d
-
+nmap ,dE :perldo s/(^\s*[#"][^!].*)//g<CR> :%s/^[\ \t#"]*\n//g<CR>:nohls<CR>
+nmap ,de :g/\s*#[^!]\\|\s*#$\\|^\s*$/d
+"(2020-02-17) add support of "non-breaking" space
+nn ,de g/\s*#[^!]\|\s*#$\|^\(\s*\|\%u00a0\)$/d
 "more general way (remove dependent on perl)
 "but the "map" does not work: E492 not an editor command
 "map ,dE :g/\v^\s*#([^!]|$)|^\s*$/d
@@ -746,6 +863,11 @@ map ,de :g/\s*#[^!]\\|\s*#$\\|^\s*$/d
 vn ,de :s/^[\ \t]*\n//g<CR>:nohls<CR>
 "remove empty lines in visual mode
 "vmap <F8> :g/^\s*$/d<CR>
+
+"(Fri 10 Jan 2020 10:46:19 AM STD) 
+"https://vim.fandom.com/wiki/Remove_unwanted_spaces#Simple_commands_to_remove_unwanted_whitespace
+:nnoremap <silent> ,dw :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+
 
 "QFwin {{{2
 
@@ -792,7 +914,7 @@ function! FormatBook(...) range
 endf
 "
 com! -range=% -nargs=* FormatBook :<line1>,<line2>call FormatBook(<f-args>)
-map ,bb :FormatBook<CR>
+nmap ,bb :FormatBook<CR>
 
 "version3: {{{3
 "this works, and much shorter
@@ -863,7 +985,7 @@ if exists("+undofile")
   set undodir+=~/.vim/undo//
   set undofile
 "  set undolevels=1000         " maximum number of changes that can be undone
-  set undoreload=10000        " maximum number lines to save for undo on a buffer reload
+  set undoreload=1000000        " maximum number lines to save for undo on a buffer reload
 endif
 
 
@@ -1026,10 +1148,10 @@ fun! RangerChooser(...)
     redraw!
 endfun
 
-map ,r :call RangerChooser()<CR>
+nmap ,r :call RangerChooser()<CR>
 command! -nargs=? RangerChooser call RangerChooser("<args>")
 
-map ,R :!ranger-cd<CR>
+nmap ,R :!ranger-cd<CR>
 
 "folding {{{2
 "yank only non-folded texts
@@ -1054,7 +1176,7 @@ endwhile
 "2) ping: put the list into registers directly
 let @"=join(buffer,"\n") . "\n"
 let @+=@"
-
+let @a=@"
 endfu 
 
 com! -range=% CopyFolds :<line1>,<line2>call CopyNonFolded() 
@@ -1138,9 +1260,9 @@ function! MoveCurrentTab(value)
   exe 'tabmove '.a:value
 endfunction
 
-map <silent> <M-left> :call MoveCurrentTab('-1')<Esc>
+nmap <silent> <M-left> :call MoveCurrentTab('-1')<Esc>
 "map <silent> <M-right> :call MoveCurrentTab(1)<Esc>
-map <silent> <M-right> :call MoveCurrentTab('+1')<Esc>
+nmap <silent> <M-right> :call MoveCurrentTab('+1')<Esc>
 
 "doc render (doc/rtf/html/pdf/ps) {{{2
 "doc to text
@@ -1184,311 +1306,6 @@ autocmd FileReadPost *.*ps %!ps2txt "%"
 "pcap, tcpdump
 autocmd BufReadPost *.*pcap %!tcpdump -SvvtttXXnr "%"
 autocmd FileReadPost *.*pcap %!tcpdump -SvvtttXXnr "%"
-
-"others {{{2
-
-"keep the cursor vertically centered.
-"http://vim.wikia.com/wiki/Make_search_results_appear_in_the_middle_of_the_screen
-set scrolloff=3
-nn n nzt
-nn N Nzt
-
-nn ,fl :set ft=jel<CR>
-nn ,fc :set ft=jec<CR>
-nn ,fj :set foldmethod=marker<CR>:set foldmarker=\ {,},\ [,]<CR><c-l>
-
-"nn ,>  0/{<cr>mj%mu%jmj'ukmu>'j:nohls<cr>
-nn ,i  0/{<cr>ma%dd'addzc
-nn ,i  0/{<cr>mj%mu%jmj'ukmu>'j:nohls<cr>
-
-
-"no need, plugin built-in map: <c-w>o
-"nn ,tz :ZoomWin<CR>
-
-"move done task to ArchiveDone section
-"phaseI(01/07/2013)
-"vn ,ad d/ArchiveDone<cr>o<cr><esc>P<c-o>
-vmap ,ad d:set wrapscan<cr>/ArchiveDone$<cr>o<cr>.archived@<F11><cr><esc>P<c-o>dd:set nowrapscan<cr>
-"vn ,aD d?ArchiveDoneReopen<cr>o<cr><esc>P<c-o>
-vmap ,aD d?ArchiveDoneReopen<cr>o<cr>.reopened@<F11><cr><esc>P<c-o>
-vmap ,ap d/ArchiveNotDone<cr>o<cr>.archived@<F11><cr><esc>P<c-o>dd
-
-"phaseII:
-" todo:need to save previous search regis,and restore afterward
-
-
-
-"base64 encryption
-noremap ,eb vip:!base64<CR>
-noremap ,eB vip:!base64 -d<CR>
-
-noremap ,em :?#show ?,/# /g/classifier-group.*\n\s*[1-9]\d* packets/.,+1p
-noremap ,en :?#show ?,/# /g/slot (2).*\n.*\n.*control bus reset/p <bar> +2p
-
-"visual block a paragraph
-nn ,V {+vip<c-v>$
-"selected the just-pasted text blocks
-nn ,v '[<S-v>']
-nn ,o '[<S-v>'.
-"nmap ,, ,v>
-nmap ,> ,v>
-
-
-"toggle spellcheck
-"http://vim.wikia.com/wiki/Toggle_spellcheck_with_function_keys
-map ,tS :setlocal spell! spelllang=en_us<CR>
-
-
-"change dir to curr file folder,only for curr win
-"print the directory after changing, so you know where you ended up. 
-nnoremap ,cd :lcd %:p:h<CR>:pwd<CR>
-"maybe change dir globally is more convenient?
-nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
-
-"add c-l when expanding a fold using "l", 
-"need more work: adjust if it's a large file or not
-":nn <expr>  l  foldclosed(".")>=1 ? "zo<C-L>" : "l"
-":nn <expr>  zc  foldclosed(".")>=1 ? "zc<C-L>" : "zc"
-":nn <expr>  zC  foldclosed(".")>=1 ? "zC<C-L>" : "zC"
-":nn <expr>  zM  foldclosed(".")>=1 ? "zM<C-L>" : "zM"
-
-:set foldcolumn=2 		"make N column as left margin (for the fold mark)
-":set foldmarker={,},{{{,}}}
-":set foldmethod=marker
-
-"disable showmarks plugin on startup
-let showmarks_enable=0
-"define a command "Grep", grep match of last search, then put in a new buffer
-"http://vim.wikia.com/wiki/VimTip1063
-"both doesn't work well with a range coz g// repeat without range
-"command! Grep execute 'normal! 0"ay0' | execute 'g//y A' | tabnew | enew | setlocal bt=nofile | put! a | nohls
-":nmap _g :let @b=&number<CR>:set nonumber<CR>:redir @a<CR>:g//<CR>:redir END<CR>:let &number=@b<CR>:new<CR>:put! a<CR><CR>
- command! -range=% MyGrep let @a='' | execute '<line1>,<line2>g//y A' | tabnew | enew | setlocal bt=nofile | put! a | nohls 
-"
-:dig a 9639 		"under insert mode, use c-k a to input ▧, great!
-
-"for junos config, to jump to the next/prev clause in current level
-:map ]\ $%/{<CR>:nohls<CR>
-:map [\ $?}<CR>%:nohls<CR>
-
-
-
-
-
-"Alt-right to bnext(go next buffer)
-map <A-up> <ESC>:bn<CR>	
-"Alt-left to bprev(go prev buffer)
-map <A-down> <ESC>:bp<CR>	
-"ISsue: sometime low performance, don't know why, 
-"issue: after jump and do j,k, the move start from old place
-"up/down to the same mapping is OK
-"map j gj		
-"map k gk		
-"noremap j gj
-"noremap k gk
-"same for insert mode
-"imap <UP> <ESC>gki
-"imap <DOWN> <ESC>gji
-"map <UP> gk
-"map <DOWN> gj
-map <UP> <C-y>
-map <DOWN> <C-e>
-map <left> zh
-map <right> zl
-
-map <C-left> zH
-map <C-right> zL
-
-"map , @q
-
-"open a filename under cursor in a new tab
-map gf :tabedit <cfile><CR>
-"support filename with space, for gf
-"(2015-11-20) disable this, looks not a good option. this will treat the whole
-"line as a filename! 
-"set isfname+=32
-
-"toggle menu&toolbar with C-F2
-map <silent> <C-F2> 
-    \:if &guioptions =~# 'T' <Bar>
-    \set guioptions-=T <Bar>
-    \set guioptions-=m <Bar>
-    \else <Bar> 
-    \set guioptions+=T <Bar>
-    \set guioptions+=m <Bar>
-    \endif<CR>
-
-
-map <F7> A <tab>#<------<Esc>
-map ,ma A <tab>#<------<Esc>
-
-"remove empty lines in visual mode
-vmap <F8> :g/^$/d<CR>
-
-nmap <silent> <C-F8> <ESC>:Tlist<RETURN>
-"we better don't change the basic behavior? (so we won't be feeling pain when
-"changing to anther system in the future
-"map o o<esc>
-"copy current fullpath filename to vim buffer
-map <S-F8> :let @" = expand("%:p")<enter>
-
-"join every 2 lines, I make it by this, but don't quite understand why it
-"works :)
-"no, it doesn't always work
-map <F9> <ESC>qqJjq@q
-
-"for vim under tmux
-nnoremap ^[[1;2D <ESC><c-w>>
-nnoremap ^[[1;2C <ESC><c-w><
-nnoremap ^[[1;2A <ESC><c-w>+
-nnoremap ^[[1;2B <ESC><c-w>-
-
-"use s-arrow key to resize window
-"(2018-03-13) with ,h and ,H for same goal, maybe use this to scroll quick horizontally
-"nnoremap <S-right> <ESC><c-w>>
-"nnoremap <S-left> <ESC><c-w><
-nnoremap <S-right> <ESC>zL
-nnoremap <S-left> <ESC>zH
-nnoremap <S-up> <ESC><c-w>+
-nnoremap <S-down> <ESC><c-w>-
-
-"noremap y Y
-"noremap Y y
-
-map Y y$
-"this won't work yet
-"rmap <S-Space> <PAGEUP>
-
-"sketch plugin,don't work
-map <C-F1> :call ToggleSketch()<CR>	
-
-
-"this, to invoke sketch plugin,somehow ,doesn't work
-nmap <silent> <C-F3> :call ToggleSketch()<CR>
-
-
-"create a new menu Tabs and some items in it
-:menu Tabs.Next <ESC>:tabnext<cr>
-:amenu Tabs.&Delete :confirm tabclose<cr>
-:amenu Tabs.&Alternate :confirm tabn #<cr>
-:amenu <silent> Tabs.&Next :tabnext<cr>
-:amenu <silent>Tabs.&Previous :tabprevious<cr>
-
-"this cause long lines become VERY slow
-":match ErrorMsg /\%3500v.\+/
-
-:set cursorline		"mark curr line (with a underline)
-"set cursorcolumn		"mark curr column
-
-	
-set splitright			"make vsplit generate new win@right
-set splitbelow			"make split generate new win@below
-
-
-"these will lead to some other issues: 
-"if manually/or via modeline, set FT to other type, like asciidoc,
-"the FT info in *.txt will got reset whenever switch bet files
-"au BufEnter *.txt setlocal ft=txt	"for txtexplorer plugin
-"au BufRead,BufNewFile *.log setlocal ft=txt "to treat .log files as text file
-
-
-:set fillchars=fold:\	"there is a space after the \
-" :set foldtext=getline(v:foldstart).'  ('.v:foldstart.')'
-
-
-
-"some codes about balloon,to preview a folded range of lines
-"and to provide suggestions on a misspelled word
-"not sure how to activate it yet
-function! FoldSpellBalloon()
-let foldStart = foldclosed(v:beval_lnum )
-let foldEnd = foldclosedend(v:beval_lnum)
-let lines = []
-" Detect if we are in a fold
-if foldStart < 0
-" Detect if we are on a misspelled word
-let lines = spellsuggest( spellbadword(v:beval_text)[ 0 ], 5, 0 )
-else
-" we are in a fold
-let numLines = foldEnd - foldStart + 1
-" if we have too many lines in fold, show only the first 14
-" and the last 14 lines
-if ( numLines > 31 )
-let lines = getline( foldStart, foldStart + 14 )
-let lines += [ '-- Snipped ' . ( numLines - 30 ) . ' lines --' ]
-let lines += getline( foldEnd - 14, foldEnd )
-else
-"less than 30 lines, lets show all of them
-let lines = getline( foldStart, foldEnd )
-endif
-endif
-" return result
-return join( lines, has( "balloon_multiline" ) ? "\n" : " " )
-endfunction
-"set balloonexpr=FoldSpellBalloon()
-"set ballooneval
-
-"in the .myabbreviations.vim there will be a lot of abbreviations
-":source ~/.vim/.myabbreviations.vim
-
-
-"When the "unnamed" string is included in the 'clipboard' option, the unnamed
-"register is the same as the "* register.  Thus you can yank to and paste the
-"selection without prepending "* to commands.  but looks visual mark also put
-"text into "* register,making normal cut&paste in single file painful
-"this breaks the vimwiki visual mode selection feature
-":set clipboard=unnamed,autoselect,exclude:cons\\\|linux
-
-"for windows vim, copy into clipboard
-if has('win32')
-    set clipboard=unnamed
-endif
-
-
-"remove options from the sessionoptions list, make vimrc changes also apply to
-"saved sessions
-:set sessionoptions-=options
-"from vim user manual, for unix/win compatibility
-:set sessionoptions+=unix,slash
-
-
-if !exists(":DiffOrig")
-command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-\ | wincmd p | diffthis
-endif
-
-
-"save file in insert mode
-":imap <C-s> <esc>:w<cr>a
-" save file (ctrl-s)
-":map <C-s> :w<cr>
-"copy selected text (ctrl-c), originally a not-so-useful key in vim
-:vmap <C-c> "+y"*y
-:vmap <A-c> "*y
-"Paste clipboard contents (ctrl-p), originally a not-so-useful key in vim
-:nnoremap <C-p> "+p
-"c-s-letter bind doesn't work
-"c-letter & c-s-letter use same key code,vim can't diff
-":nnoremap <C-s-p> "+P
-" "*p seems not much useful as "+p
-":nnoremap <A-p> "*p
-"but this seems not work (from cygwin ssh)
-:nnoremap <A-p> "+P
-"use the vmap trick(press v first), to diff with c-p in normal mode
-:vn <c-p> <esc>"+P
-":nnoremap <A-s-p> "*P
-"cut selected text (ctrl-x), orig key not-so-useful
-:vmap <C-x> "+x
-
-"this is replaced by .vim/ftdetect/myft.vim
-"autocmd BufReadPost *.log set ft=je
-
-nnoremap 'a 'azt
-nnoremap 'b 'bzt
-nnoremap 'c 'czt
-
-:map Y y$
-
 
 "recursive grep {{{2
 "http://learnvimscriptthehardway.stevelosh.com/chapters/34.html
@@ -1580,11 +1397,15 @@ nn ,aq o<c-o>0
 	\Answer 1<cr>
 	\<esc>2k
 
-"insert blocks {{{3
+"making an asciidoc block {{{3
 nn ,al 0o----<cr>----<cr><esc>k
 "(2018-02-21) this might be more frequently used
-nn ,al {i----<esc>}i----<esc>
+nn ,al {i----<esc>}i----<esc>o
 vn ,al mboma<esc>O<esc>0i----<esc>'bo<esc>0i----<esc>gvo
+"(2019-06-04) make it always jump back to beginning in the end
+nn ,al {i----<esc>}i----<esc>{
+
+vn ,al mboma<esc>O<esc>0i----<esc>'bo<esc>0i----<esc>gv
 
 nn ,aL 0o....<cr>....<cr><esc>k
 nn ,as 0o****<cr>****<cr><esc>k
@@ -1611,6 +1432,20 @@ nn ,aN o<c-o>0
 	    \===============================<cr>
 	    \<esc>2k
 
+"making a markdown python block {{{3
+"(Tue 29 Oct 2019 09:37:27 AM DST) 
+""basic, has to put cursor at beginning line of a block
+"nn ,pl {i```python<esc>}i```<esc>{
+""better, work for any newly inserted block,cursor can be anywhere
+"nm ,pl ,vo<esc>O```python<esc>gvo<esc>o```<esc>gvo<esc>
+"best, remove extra gv command to make screen less flashing
+nm ,pl ,v<esc>'<O```python<esc>'>j0i```<cr><esc>'<
+vn ,pl mboma<esc>O<esc>0i```python<esc>'bo<esc>0i```<esc>gv
+vn ,pl mboma<esc>O<esc>0i```python<esc>'bo<esc>0i```<esc>gv
+
+nm ,pc ,v<esc>'<O"""<esc>'>j0i"""<cr><esc>'<
+vn ,pc mboma<esc>O<esc>0i"""<esc>'bo<esc>0i"""<esc>gv
+vn ,pc mboma<esc>O<esc>0i"""<esc>'bo<esc>0i"""<esc>gv
 
 "insert a table {{{3
 "
@@ -1870,7 +1705,7 @@ command! Asciidoc2PDF1 :w|!a2x
     \ -D ~/Dropbox/temp-transfer/ "%"
 
 "overide with asciidoctor-pdf way (2015-12-11) 
-map ,ap :w !a2x 
+nmap ,ap :w !a2x 
     \ -f pdf 
     \ --verbose --no-xmllint 
     \ --icons-dir=~/bin/asciidoc-8.6.8/images/icons/
@@ -1989,13 +1824,13 @@ endfunction
 "phaseI: simple vmap, no arguments pass {{{4
 "nn ,ah :w !asciidoc -o ~/Dropbox/temp-transfer/temp.html -a toc - 
 "    \ \| gnome-open ~/Dropbox/temp-transfer/temp.html<CR> 
-nn ,ah :w !asciidoctor -o '%:r.html' -<CR><CR>
+nn ,ah :w !asciidoctor -o '%:r.html' -<CR>
 nn ,ap :w !asciidoctor -r asciidoctor-pdf -b pdf -a allow-uri-read -
 vn ,ah :!asciidoc -o - - 
 vn ,ah :w !asciidoctor - -o ~/Dropbox/temp.html
 
 "map but don't return in the end, leave chance to change
-map ,aH :w !asciidoc
+nmap ,aH :w !asciidoc
     \ -a numbered -a toc2
     \ -a toclevels=4
     \ -a icons
@@ -2009,7 +1844,7 @@ map ,aH :w !asciidoc
     \ -b html5 -d book -&
 
 "(Mon 22 Feb 2016 11:33:46 PM EST) 
-map ,aH :w !asciidoctor
+nmap ,aH :w !asciidoctor
     \ -a numbered
     \ -a toc=left
     \ -a toclevels=4
@@ -2076,8 +1911,10 @@ function! Log2AsciidocClean()
 
 "clean the file
     "remove some special CH, like 
-    :%s#\r\|\s\=\(\|\)##
-    :%s#\(\|\)##
+    :%s#\r\|\s\=\(\|
+\)##
+    :%s#\(\|
+\)##
     "turn  into delete (fritzophrenic@gmail.com)
     :g//while getline('.') =~ '[^]' | s/[^]//g | endwhile
 
@@ -2252,7 +2089,7 @@ nn ,mr <esc>O<enter>---<enter><enter><c-o>mr<enter><enter>---<enter><c-o>'r
 
 nn ,mi <esc>O![packet flow]({{ site.BASE_PATH }}/images/asciiart-images.png "packet flow")<enter><esc>
 
-nn ,mh :%!markdown_py -x toc
+nn ,mh :w !markdown_py -x toc > '%:r.html'<CR><CR>
 
 "jekyll--- {{{2
 "
@@ -2290,7 +2127,7 @@ if !exists('g:jekyll_post_created')
   let g:jekyll_post_created = "%Y %b %d %X"
 endif
 
-"constant: blog1
+"constant: personal blog
 if !exists('g:jekyll_path')
     "let g:jekyll_path="~/mytest-project/jekyll-site/pinggit.github.com"
     "(2016-03-26) change for diff folder in vm (10.85.47.3)
@@ -2299,21 +2136,61 @@ if !exists('g:jekyll_path')
     "let g:jekyll_post_published = "false"
 endif
 
-"constant: blog2
-if !exists('g:jekyll_path3')
+"constant: juniper blog
+if !exists('g:jekyll_path2')
     " let g:jekyll_path2="~/mytest-project/jekyll-site/blog.clone"
     " let g:jekyll_path2="~/mytest-project/jekyll-site/juniperblog"
     " running new jekyll over cygwin (2018-02-18) 
     " this one has no tags
     " let g:jekyll_path2="~/mytest-project/jekyll-site/juniperblog2"
     " this one has tags
-    let g:jekyll_path3="~/mytest-project/jekyll-site/juniperblog3"
+    " let g:jekyll_path3="~/juniperblog3"
+    let g:jekyll_path2="~/juniper.blog"
+endif
+
+"constant: pynb blog
+if !exists('g:jekyll_path4')
+    let g:jekyll_path4="~/pynbgang.blog"
+endif
+
+"constant: kbreview blog (personal tech)
+if !exists('g:jekyll_path5')
+    let g:jekyll_path5="~/Dropbox/kbreview"
 endif
 
 "save the path change
 if !exists('g:jekyll_currentpath')
-    let g:jekyll_currentpath=g:jekyll_path
+    let g:jekyll_currentpath=g:jekyll_path2
 endif
+
+function! JekyllSetBlogID(blogid) "{{{3
+    let g:jekyll_blogid=a:blogid
+    if g:jekyll_blogid==1       "personal blog
+        let g:jekyll_currentpath=g:jekyll_path
+        let g:jekyll_upload="github"
+    elseif g:jekyll_blogid==2   "juniper blog
+        let g:jekyll_currentpath=g:jekyll_path2
+        let g:jekyll_upload="rsync"
+    elseif g:jekyll_blogid==3   "juniper blog
+        let g:jekyll_currentpath=g:jekyll_path3
+        let g:jekyll_upload="rsync"
+    elseif g:jekyll_blogid==4   "pynbgang
+        let g:jekyll_currentpath=g:jekyll_path4
+        let g:jekyll_upload="github"
+    elseif g:jekyll_blogid==5   "kbreview
+        let g:jekyll_currentpath=g:jekyll_path5
+        let g:jekyll_upload="github"
+    else
+        let g:jekyll_currentpath=g:jekyll_path3
+        let g:jekyll_upload="rsync"
+    endif
+    exec "lcd" . g:jekyll_currentpath
+endf
+
+command! -nargs=1 JekyllSetBlogID call JekyllSetBlogID(<q-args>)
+
+nn ,ji :JekyllSetBlogID 2
+
 
 if !exists('g:jekyll_title')
   let g:jekyll_title = "unnamed"
@@ -2328,7 +2205,7 @@ if !exists('g:jekyll_post_suffix')
 endif
 
 if !exists('g:jekyll_prompt_tags')
-  let g:jekyll_prompt_tags = "life"
+  let g:jekyll_prompt_tags = "python, leetcode"
 endif
 
 if !exists('g:jekyll_prompt_categories')
@@ -2345,7 +2222,7 @@ if !exists('g:jekyll_template')
 endif
 
 if !exists('g:jekyll_post_published')
-  let g:jekyll_post_published = "false"
+  let g:jekyll_post_published = "true"
 endif
 
 if !exists('g:jekyll_upload')
@@ -2353,7 +2230,7 @@ if !exists('g:jekyll_upload')
 endif
 
 if !exists('g:jekyll_blogid')
-  let g:jekyll_blogid= 1
+  let g:jekyll_blogid= 3
 endif
 
 if !exists('g:jekyll_disqus_template')
@@ -2362,7 +2239,7 @@ endif
 
 nn        ,jb  :JekyllBuild<CR>
 nn        ,js  :JekyllPost<CR>
-map       ,jp  :JekyllPostRange<CR>
+nn        ,jp  :JekyllPostRange<CR>
 nn        ,jl  :JekyllList<CR>
 nn <expr> ,jL  RangerChooser(g:jekyll_path . "/_posts") <bar> sleep 3
 
@@ -2441,7 +2318,7 @@ function! JekyllPrefixYamlHeader() "{{{4
     let err1 = append(0, template)
 endf
 
-map ,jy :call JekyllPrefixYamlHeader()<CR>
+nmap ,jy :call JekyllPrefixYamlHeader()<CR>
 
 function! JekyllAppendDisqus() "{{{4
     let template4disqus=g:jekyll_disqus_template
@@ -2449,7 +2326,7 @@ function! JekyllAppendDisqus() "{{{4
     exec "read" . template4disqus
 endf
 
-map ,jd :call JekyllAppendDisqus()<CR>
+nmap ,jd :call JekyllAppendDisqus()<CR>
 
 function! A2J(...) range "{{{4
 
@@ -2634,7 +2511,7 @@ com! -range=% -nargs=* A2J :<line1>,<line2>call A2J(<f-args>)
 nmap <expr> ,jA A2J(-1) . "\<c-b>" . repeat("\<delete>",3)
 "support:               all non-range or range
 "don't support:         returning CLIes for user selection
-map ,ja :A2J
+nmap ,ja :A2J
 
 
 "JekyllGit {{{4
@@ -2670,7 +2547,7 @@ function! JekyllGit(commitmsg)
         let current_path=g:jekyll_path
     elseif current_blogid==2
         let g:jekyll_upload='rsync'                 "set proper upload method
-        let current_path=g:jekyll_path3
+        let current_path=g:jekyll_path2
     else
     endif
 
@@ -2698,7 +2575,8 @@ function! JekyllGit(commitmsg)
         "let upload="git push origin master"
         let upload="git push blog master"
     elseif g:jekyll_blogid==2
-        let generate='jekyll --safe --no-auto'
+        "let generate='jekyll --safe --no-auto'
+        let generate='jekyll build --safe -I'
         let chmod="chmod -R 755 " . current_path . "/_site"
         let generate=generate . ";" . chmod
 
@@ -2706,7 +2584,7 @@ function! JekyllGit(commitmsg)
         let upload="
         \rsync --delete -qrlczPp --chmod=a+rwx,g+rx,o+r " . 
         \current_path . 
-        \"/_site/ pings@svl-jtac-tool02:public_html/blog/"
+        \"/_site/ pings@svl-jtac-tool02:public_html/blognew/"
 
         "verbose:       rsync --delete -vvrlczP " . 
         "quiet:         rsync --delete -qrlczP " . 
@@ -2763,29 +2641,10 @@ nn <expr> ,jt JekyllThemeSelect()
 "quick publish the post (git push + w3m review)
 "pending issues:
 "  don't know how to prompt&wait for user input
-map ,jP :
+nmap ,jP :
      \exec JekyllGit("g:jekyll_title") . repeat("\<left>", 24) <Bar>
      \!w3m http://pinggit.github.com
      \<CR>
-
-function! JekyllSetBlogID(blogid) "{{{4
-    let g:jekyll_blogid=a:blogid
-    if g:jekyll_blogid==1
-        let g:jekyll_currentpath=g:jekyll_path
-        let g:jekyll_upload="github"
-    elseif g:jekyll_blogid==2
-        let g:jekyll_currentpath=g:jekyll_path3
-        let g:jekyll_upload="rsync"
-    else
-        let g:jekyll_currentpath=g:jekyll_path
-        let g:jekyll_upload="github"
-    endif
-    exec "lcd" . g:jekyll_currentpath
-endf
-
-command! -nargs=1 JekyllSetBlogID call JekyllSetBlogID(<q-args>)
-
-nn ,ji :JekyllSetBlogID 2
 
 " modified original jekylly plugin {{{3
 " purpose of moving here is for portability - just one vimrc file!
@@ -2796,7 +2655,8 @@ nn ,ji :JekyllSetBlogID 2
 "   ping
 "   vars {{{5
 if (exists("g:loaded_jekyll") && g:loaded_jekyll) || &cp
-  finish
+  "this will cause re-source of vimrc won't work!
+  "finish
 endif
 let g:loaded_jekyll = 1
 
@@ -2896,14 +2756,15 @@ command! -nargs=* JekyllBuild :call JekyllBuild(<q-args>)
 function JekyllList()   "{{{5
   "exe "e " . g:jekyll_path . "/_posts"
   "ping
-  if g:jekyll_blogid==1
-    "exe "vnew " . g:jekyll_path . "/_posts"
-    exe "edit " . g:jekyll_path . "/_posts"
-  elseif g:jekyll_blogid==2
-    "exe "vnew " . g:jekyll_path3 . "/_posts"
-    exe "edit " . g:jekyll_path3 . "/_posts"
-  else
-  endif
+  exe "e " . g:jekyll_currentpath . "/_posts"
+  "if g:jekyll_blogid==1
+  "  "exe "vnew " . g:jekyll_path . "/_posts"
+  "  exe "edit " . g:jekyll_path . "/_posts"
+  "elseif g:jekyll_blogid==3
+  "  "exe "vnew " . g:jekyll_path3 . "/_posts"
+  "  exe "edit " . g:jekyll_path3 . "/_posts"
+  "else
+  "endif
 endfunction
 command! -nargs=0 JekyllList :call JekyllList()
 
@@ -3147,10 +3008,10 @@ onoremap ah :<c-u>execute "normal! ?^==\\+ \\+.*$\r:nohlsearch\rg_vk0"<cr>
 "
 "insert a timestamp in curr cursor place(and return to normal)
 "(02/24/2013) change format to def jekyll(01/15/2001 to 2001-01-15)
-nn ,di i(<esc>"=strftime("%Y-%m-%d")<CR>pa)<space><esc>
-nn ,da a(<esc>"=strftime("%Y-%m-%d")<CR>pa)<space><esc>
-nn ,Di i(<esc>"=strftime('%c')<CR>pa)<space><esc>
-nn ,Da a(<esc>"=strftime('%c')<CR>pa)<space><esc>
+nn ,Di i(<esc>"=strftime("%Y-%m-%d")<CR>pa)<space><esc>
+nn ,Da a(<esc>"=strftime("%Y-%m-%d")<CR>pa)<space><esc>
+nn ,di i(<esc>"=strftime('%c')<CR>pa)<space><esc>
+nn ,da a(<esc>"=strftime('%c')<CR>pa)<space><esc>
 ino <F11> (<C-R>=strftime("%Y-%m-%d")<CR>)<space>
 "this doesn't work in tmux
 ino <C-F11> (<C-R>=strftime('%c')<CR>)<space>
@@ -3162,7 +3023,7 @@ ino <C-F11> (<C-R>=strftime('%c')<CR>)<space>
 function! DiffWithFileFromDisk()
     let filename=expand('%')
     let diffname = filename.'.fileFromBuffer'
-"ping
+    "ping
     let diffname = '/tmp/'.diffname
     exec 'saveas! '.diffname
     diffthis
@@ -3211,9 +3072,330 @@ endfunction
 
 "nmap <expr> h <SID>Maph()
 
+"keep the cursor vertically centered. {{{2
+"http://vim.wikia.com/wiki/Make_search_results_appear_in_the_middle_of_the_screen
+set scrolloff=3
+"nn n nzt
+"nn N Nzt
+
+"some setting for juniper config files {{{2
+nn ,fl :set ft=jel<CR>
+nn ,fc :set ft=jec<CR>
+nn ,fj :set foldmethod=marker<CR>:set foldmarker=\ {,},\ [,]<CR><c-l>
+nn ,em :?#show ?,/# /g/classifier-group.*\n\s*[1-9]\d* packets/.,+1p
+nn ,en :?#show ?,/# /g/slot (2).*\n.*\n.*control bus reset/p <bar> +2p
+
+"nn ,>  0/{<cr>mj%mu%jmj'ukmu>'j:nohls<cr>
+nn ,i  0/{<cr>ma%dd'addzc
+nn ,i  0/{<cr>mj%mu%jmj'ukmu>'j:nohls<cr>
+"nn ,i  0/{\\|\[<cr>mj%mu%jmj'ukmu>'j:nohls<cr>
+
+"move done task to ArchiveDone section {{{2
+"phaseI(01/07/2013)
+"vn ,ad d/ArchiveDone<cr>o<cr><esc>P<c-o>
+vmap ,ad d:set wrapscan<cr>/ArchiveDone$<cr>o<cr>.archived@<F11><cr><esc>P<c-o>dd:set nowrapscan<cr>
+"vn ,aD d?ArchiveDoneReopen<cr>o<cr><esc>P<c-o>
+vmap ,aD d?ArchiveDoneReopen<cr>o<cr>.reopened@<F11><cr><esc>P<c-o>
+vmap ,ap d/ArchiveNotDone<cr>o<cr>.archived@<F11><cr><esc>P<c-o>dd
+
+"phaseII:
+" todo:need to save previous search regis,and restore afterward
+
+"base64 encryption {{{2
+nn ,eb vip:!base64<CR>
+nn ,eB vip:!base64 -di<CR>
+nn ,ev :!base64<CR>
+nn ,eV :!base64 -di<CR>
+
+"visual block {{{2
+"a paragraph
+nn ,V {+vip<c-v>$
+"selected the just-pasted text blocks
+nn ,v '[<S-v>']
+nn ,o '[<S-v>'.
+"nmap ,, ,v>
+nmap ,> ,v>
+
+"others {{{2
+
+"toggle spellcheck
+"http://vim.wikia.com/wiki/Toggle_spellcheck_with_function_keys
+nmap ,tS :setlocal spell! spelllang=en_us<CR>
+
+
+"change dir to curr file folder,only for curr win
+"print the directory after changing, so you know where you ended up. 
+nnoremap ,cd :lcd %:p:h<CR>:pwd<CR>
+"maybe change dir globally is more convenient?
+nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
+
+"add c-l when expanding a fold using "l", 
+"need more work: adjust if it's a large file or not
+":nn <expr>  l  foldclosed(".")>=1 ? "zo<C-L>" : "l"
+":nn <expr>  zc  foldclosed(".")>=1 ? "zc<C-L>" : "zc"
+":nn <expr>  zC  foldclosed(".")>=1 ? "zC<C-L>" : "zC"
+":nn <expr>  zM  foldclosed(".")>=1 ? "zM<C-L>" : "zM"
+
+:set foldcolumn=2 		"make N column as left margin (for the fold mark)
+":set foldmarker={,},{{{,}}}
+":set foldmethod=marker
+
+"disable showmarks plugin on startup
+let showmarks_enable=0
+"define a command "Grep", grep match of last search, then put in a new buffer
+"http://vim.wikia.com/wiki/VimTip1063
+"both doesn't work well with a range coz g// repeat without range
+"command! Grep execute 'normal! 0"ay0' | execute 'g//y A' | tabnew | enew | setlocal bt=nofile | put! a | nohls
+":nmap _g :let @b=&number<CR>:set nonumber<CR>:redir @a<CR>:g//<CR>:redir END<CR>:let &number=@b<CR>:new<CR>:put! a<CR><CR>
+ command! -range=% MyGrep let @a='' | execute '<line1>,<line2>g//y A' | tabnew | enew | setlocal bt=nofile | put! a | nohls 
+"
+:dig a 9639 		"under insert mode, use c-k a to input ▧, great!
+
+"for junos config, to jump to the next/prev clause in current level
+:map ]\ $%/{<CR>:nohls<CR>
+:map [\ $?}<CR>%:nohls<CR>
+
+
+
+
+
+"Alt-right to bnext(go next buffer)
+nmap <A-up> <ESC>:bn<CR>	
+"Alt-left to bprev(go prev buffer)
+nmap <A-down> <ESC>:bp<CR>	
+"ISsue: sometime low performance, don't know why, 
+"issue: after jump and do j,k, the move start from old place
+"up/down to the same mapping is OK
+"map j gj		
+"map k gk		
+"noremap j gj
+"noremap k gk
+"same for insert mode
+"imap <UP> <ESC>gki
+"imap <DOWN> <ESC>gji
+"map <UP> gk
+"map <DOWN> gj
+nmap <UP> <C-y>
+nmap <DOWN> <C-e>
+nmap <left> zh
+nmap <right> zl
+
+nmap <C-left> zH
+nmap <C-right> zL
+
+"map , @q
+
+"open a filename under cursor in a new tab
+nmap gf :tabedit <cfile><CR>
+"support filename with space, for gf
+"(2015-11-20) disable this, looks not a good option. this will treat the whole
+"line as a filename! 
+"set isfname+=32
+
+"toggle menu&toolbar with C-F2
+nmap <silent> <C-F2> 
+    \:if &guioptions =~# 'T' <Bar>
+    \set guioptions-=T <Bar>
+    \set guioptions-=m <Bar>
+    \else <Bar> 
+    \set guioptions+=T <Bar>
+    \set guioptions+=m <Bar>
+    \endif<CR>
+
+"(2018-09-23) change to 5 - because of an issue in markdown
+nmap <F7> A <tab>#<---<Esc>
+nmap ,ma A <tab>#<---<Esc>
+"don't press esc, coz always need to add comments
+nmap ,ma A <tab>#<---
+
+nn ,mA :%s/^\(#\+\)/\=repeat('=',len(submatch(1)))/gc
+
+"remove empty lines in visual mode
+vmap <F8> :g/^$/d<CR>
+
+nmap <silent> <C-F8> <ESC>:Tlist<RETURN>
+"we better don't change the basic behavior? (so we won't be feeling pain when
+"changing to anther system in the future
+"map o o<esc>
+"copy current fullpath filename to vim buffer
+nmap <S-F8> :let @" = expand("%:p")<enter>
+
+"join every 2 lines, I make it by this, but don't quite understand why it
+"works :)
+"no, it doesn't always work
+nmap <F9> <ESC>qqJjq@q
+
+"for vim under tmux
+nnoremap ^[[1;2D <ESC><c-w>>
+nnoremap ^[[1;2C <ESC><c-w><
+nnoremap ^[[1;2A <ESC><c-w>+
+nnoremap ^[[1;2B <ESC><c-w>-
+
+"use s-arrow key to resize window
+"(2018-03-13) with ,h and ,H for same goal, maybe use this to scroll quick horizontally
+"nnoremap <S-right> <ESC><c-w>>
+"nnoremap <S-left> <ESC><c-w><
+nnoremap <S-right> <ESC>zL
+nnoremap <S-left> <ESC>zH
+nnoremap <S-up> <ESC><c-w>+
+nnoremap <S-down> <ESC><c-w>-
+
+"noremap y Y
+"noremap Y y
+
+nmap Y y$
+"this won't work yet
+"rmap <S-Space> <PAGEUP>
+
+"sketch plugin,don't work
+nmap <C-F1> :call ToggleSketch()<CR>	
+
+
+"this, to invoke sketch plugin,somehow ,doesn't work
+nmap <silent> <C-F3> :call ToggleSketch()<CR>
+
+
+"create a new menu Tabs and some items in it
+:menu Tabs.Next <ESC>:tabnext<cr>
+:amenu Tabs.&Delete :confirm tabclose<cr>
+:amenu Tabs.&Alternate :confirm tabn #<cr>
+:amenu <silent> Tabs.&Next :tabnext<cr>
+:amenu <silent>Tabs.&Previous :tabprevious<cr>
+
+"this cause long lines become VERY slow
+":match ErrorMsg /\%3500v.\+/
+
+:set cursorline		"mark curr line (with a underline)
+"set cursorcolumn		"mark curr column
+
+	
+set splitright			"make vsplit generate new win@right
+set splitbelow			"make split generate new win@below
+
+
+"these will lead to some other issues: 
+"if manually/or via modeline, set FT to other type, like asciidoc,
+"the FT info in *.txt will got reset whenever switch bet files
+"au BufEnter *.txt setlocal ft=txt	"for txtexplorer plugin
+"au BufRead,BufNewFile *.log setlocal ft=txt "to treat .log files as text file
+
+
+:set fillchars=fold:\	"there is a space after the \
+" :set foldtext=getline(v:foldstart).'  ('.v:foldstart.')'
+
+
+
+"some codes about balloon,to preview a folded range of lines
+"and to provide suggestions on a misspelled word
+"not sure how to activate it yet
+function! FoldSpellBalloon()
+let foldStart = foldclosed(v:beval_lnum )
+let foldEnd = foldclosedend(v:beval_lnum)
+let lines = []
+" Detect if we are in a fold
+if foldStart < 0
+" Detect if we are on a misspelled word
+let lines = spellsuggest( spellbadword(v:beval_text)[ 0 ], 5, 0 )
+else
+" we are in a fold
+let numLines = foldEnd - foldStart + 1
+" if we have too many lines in fold, show only the first 14
+" and the last 14 lines
+if ( numLines > 31 )
+let lines = getline( foldStart, foldStart + 14 )
+let lines += [ '-- Snipped ' . ( numLines - 30 ) . ' lines --' ]
+let lines += getline( foldEnd - 14, foldEnd )
+else
+"less than 30 lines, lets show all of them
+let lines = getline( foldStart, foldEnd )
+endif
+endif
+" return result
+return join( lines, has( "balloon_multiline" ) ? "\n" : " " )
+endfunction
+"set balloonexpr=FoldSpellBalloon()
+"set ballooneval
+
+"in the .myabbreviations.vim there will be a lot of abbreviations
+":source ~/.vim/.myabbreviations.vim
+
+
+"When the "unnamed" string is included in the 'clipboard' option, the unnamed
+"register is the same as the "* register.  Thus you can yank to and paste the
+"selection without prepending "* to commands.  but looks visual mark also put
+"text into "* register,making normal cut&paste in single file painful
+"this breaks the vimwiki visual mode selection feature
+":set clipboard=unnamed,autoselect,exclude:cons\\\|linux
+
+"for windows vim, copy into clipboard
+if has('win32')
+    set clipboard=unnamed
+endif
+
+"not bad for wsl also? (2018-07-17) 
+"this may not be good choise after live with it
+"set clipboard=unnamed
+
+"remove options from the sessionoptions list, make vimrc changes also apply to
+"saved sessions
+:set sessionoptions-=options
+"from vim user manual, for unix/win compatibility
+:set sessionoptions+=unix,slash
+
+
+if !exists(":DiffOrig")
+command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+\ | wincmd p | diffthis
+endif
+
+
+"save file in insert mode
+":imap <C-s> <esc>:w<cr>a
+" save file (ctrl-s)
+":map <C-s> :w<cr>
+"copy selected text (ctrl-c), originally a not-so-useful key in vim
+:vmap <C-c> "+y"*y
+:vmap <A-c> "*y
+"c-s-letter bind doesn't work
+"c-letter & c-s-letter use same key code,vim can't diff
+":nnoremap <C-s-p> "+P
+" "*p seems not much useful as "+p
+":nnoremap <A-p> "*p
+"but this seems not work (from cygwin ssh)
+:nn <A-p> "+P
+"Paste clipboard contents (ctrl-p), originally a not-so-useful key in vim
+:nn <C-p> "+p
+"use the vmap trick(press v first), to diff with c-p in normal mode
+:vn <c-p> <esc>"+P
+":nnoremap <A-s-p> "*P
+"cut selected text (ctrl-x), orig key not-so-useful
+:vmap <C-x> "+x
+
+"this is replaced by .vim/ftdetect/myft.vim
+"autocmd BufReadPost *.log set ft=je
+
+nnoremap 'a 'azt
+nnoremap 'b 'bzt
+nnoremap 'c 'czt
+
+:map Y y$
+
+nn ,gi :Gist -p<CR>
 
 "plugin tuning options {{{1
-"
+
+"JiraVim {{{2
+let g:jiraVimDomainName = "contrail-jws"
+let g:jiraVimDomainName = "http://contrail-jws.atlassian.net"
+let g:jiraVimEmail = "pings@juniper.net"
+let g:jiraVimToken = "SqSU8lTerMSENhQ9rSqcC8DE"
+
+"AsyncRun {{{2
+"https://github.com/skywind3000/asyncrun.vim/wiki/FAQ#cant-see-the-realtime-output-when-running-a-python-script
+"disable python's stdout buffering when running in background
+let $PYTHONUNBUFFERED = 0
+let g:asyncrun_open = 8         "auto open qfix?
+
 "vim-plug {{{2
 "install plugins automatically
 "
@@ -3235,14 +3417,20 @@ endif
 "in case git is not installed, use silent to surpress error msgs
 call plug#begin('~/.vim/bundle')
 
-Plug 'vim-scripts/VOoM'
+"install new plugins without restart vim
+"yy: copy the "Plug 'xxx'" line in register ", 
+"@": execute the "Plug xxx" line
+"PlugInstall
 
+"Plug 'vim-scripts/VOoM'
+Plug 'vim-voom/VOoM'
 "optional
 Plug 'plasticboy/vim-markdown'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'ervandew/supertab'
 Plug 'mattn/webapi-vim'
 Plug 'mattn/gist-vim'
+Plug 'scrooloose/nerdtree'
 
 "more optional
 Plug 'junegunn/vim-easy-align'
@@ -3256,22 +3444,323 @@ Plug 'xolox/vim-misc'
 Plug 'xolox/vim-easytags'
 Plug 'ianva/vim-youdao-translater'
 Plug 'easymotion/vim-easymotion'
+Plug '907th/vim-auto-save'
 
+"Plug 'vim-scripts/Conque-Shell'  "don't install this
+Plug 'oplatek/conque-shell'
 Plug 'shougo/vimshell.vim'
-Plug 'shougo/vimproc.vim'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+
 Plug 'vim-scripts/taglist.vim'
 Plug 'altercation/vim-colors-solarized'
-Plug 'klen/python-mode'
+Plug 'morhetz/gruvbox'
+
+Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'powerline/fonts'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/MPage'
+Plug 'terryma/vim-expand-region'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'johngrib/vim-game-code-break'
+Plug 'junegunn/goyo.vim'
+Plug 'zyedidia/vim-snake'
+Plug 'johngrib/vim-game-snake'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } 
+"Plug 'junegunn/fzf.vim'
+Plug 'itchyny/calendar.vim'
+Plug 'tpope/vim-eunuch'
+Plug 'andrewradev/linediff.vim'
+Plug 'chrisbra/vim-diff-enhanced'
+Plug 'tpope/vim-obsession'
+"Plug 'pedrohdz/vim-yaml-folds'
 "Plug 'Valloric/YouCompleteMe'
+Plug 'vim-scripts/visSum.vim'
+Plug 'sk1418/howmuch'
+Plug 'w0rp/ale'
+Plug 'chase/vim-ansible-yaml'
+Plug 'vim-scripts/ZoomWin'              "add zoomwin
+Plug 'farmergreg/vim-lastplace'
+Plug 'sillybun/vim-repl'                "useful (sometimes buggy)
+Plug 'rhysd/reply.vim', { 'on': ['Repl', 'ReplAuto'] }
+Plug 'skywind3000/asyncrun.vim'         "very good
+Plug 'paulkass/jira-vim'                "not working yet (2020-02-11) 
+Plug 'mileszs/ack.vim'
+Plug 'camspiers/lens.vim'
+Plug 'camspiers/animate.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'xuyuanp/nerdtree-git-plugin'
+Plug 'sjl/gundo.vim'
 
 call plug#end()
 
+"ack {{{2
+cnoreabbrev Ack Ack!
+
+"Calendar {{{2
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
+
+"fzf {{{2
+
+"ctrlp {{{2
+"ctrl + j/k  # 进行上下选择
+"ctrl + x/s/CR    # 在当前窗口水平分屏打开文件
+"ctrl + v    # 同上, 垂直分屏
+"ctrl + t    # 在tab中打开
+"<c-d>       # 只能搜索全路径文件
+"<c-r>       # 可以使用正则搜索文件
+"
+"
+"if executable('ag')
+"  " Use ag over grep
+"  set grepprg=ag\ --nogroup\ --nocolor
+"
+"  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+"  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+"  "let g:ctrlp_user_command = 'ag %s -l --nocolor --ignore=vendor --ignore images --ignore svg --ignore fonts -g ""'
+"  " ag is fast enough that CtrlP doesn't need to cache
+"  let g:ctrlp_use_caching = 0
+"endif
+
+
+"if exists("g:ctrlp_user_command")
+"  unlet g:ctrlp_user_command
+"endif
+"if executable('ag')
+"  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+"  let g:ctrlp_user_command =
+"    \ 'ag %s --files-with-matches -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
+"
+"  " ag is fast enough that CtrlP doesn't need to cache
+"  let g:ctrlp_use_caching = 0
+"else
+"  " Fall back to using git ls-files if Ag is not available
+"  let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
+"  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others']
+"endif
+
+"
+"
+let g:ctrlp_map = ',cp'
+nmap ,cm :CtrlPMRU<CR>
+nmap ,cb :CtrlPBuffer<CR>
+"let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+let g:ctrlp_cache_dir = $HOME.'/.vim/ctrlp'
+
+"this will affact all other plugins that may rely on searching these
+"folders...
+"set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
+"
+"this is ctrlp specific
+"this line sharply reduced the index time in my system
+"   \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$|c|Dropbox',
+"
+"than the built-in example:
+"   \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
+"
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$|c|Dropbox',
+    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
+    \ }
+
+let g:ctrlp_max_depth = 40
+let g:ctrlp_max_files = 0
+let g:ctrlp_working_path_mode=0
+let g:ctrlp_match_window_bottom=1
+let g:ctrlp_max_height=100
+let g:ctrlp_match_window_reversed=0
+let g:ctrlp_mruf_max=500
+let g:ctrlp_follow_symlinks=1
+let g:ctrlp_clear_cache_on_exit = 0
+
+let g:ctrlp_switch_buffer = 'Et'
+
+"searching by filename (vs full path name) as default
+let g:ctrlp_by_filename = 1
+"searching by regex as default
+let g:ctrlp_regexp = 1
+let g:ctrlp_show_hidden = 1
+
+"c-y under ctrlp mode to create new file in a 't'ab, default is vsplit
+let g:ctrlp_open_new_file = 't'
+
+"when opening multiple files, put each file in a new tab,
+"but no more than 5, others will be in hidden buffers
+"  t - each file in a new tab.
+"  h - each file in a new horizontal split.
+"  v - each file in a new vertical split.
+"  i - all files as hidden buffers.
+"  j - after opening, jump to the first opened tab or window.
+"  r - open the first file in the current window, then the remaining files in
+"      new splits or new tabs depending on which of "h", "v" and "t" is also
+"      present.
+"however, this setting will be override by ctrlp_arg_map
+let g:ctrlp_open_multiple_files = '5t'
+
+"<c-o> and <c-y> mappings will prompt for a keypress regarding how to open
+"t/h/v/i/r tab/horizontal/vertical/hidden buffer/current win
+let g:ctrlp_arg_map = 1
+
+"let g:ctrlp_match_window = 'bottom,order:ttb,min:1,max:10,results:500'
+
+let g:ctrlp_default_input = 1
+let g:ctrlp_tilde_homedir = 1
+"let g:ctrlp_bufpath_mod = ':~:.:h'
+
+"this does not work
+"let g:ctrlp_prompt_mappings = {
+"    \ 'PrtInsert("c")':       ['<MiddleMouse>', '<s-insert>'],
+"    \ 'PrtClearCache()':      ['<F5>'],
+"    \}
+
+
+"vrc (vim-rest-console) {{{2
+"always display the curl command executed
+let g:vrc_show_command = 1
+
+"let g:vrc_curl_opts = {
+"  \ '-sS': '',               <-- options without value.              
+"  \ '--connect-timeout: 10,  <-- single option.                      
+"  \ '-H': ['header1: value1', 'header2: value2'],  <-- multi-option. 
+"\}
+let g:vrc_curl_opts = {
+  \ '-sS': '',
+  \ '--connect-timeout': 10,
+  \ '-i': '',
+  \ '-u': 'admin:Juniper',
+  \ '--max-time': 60,
+  \ '-k': '',
+\}
+
+
+"
+"Tabmerge {{{2
+"https://www.vim.org/scripts/script.php?script_id=1961
+"https://raw.githubusercontent.com/vim-scripts/Tabmerge/master/plugin/Tabmerge.vim
+" Tabmerge -- Merge the windows in a tab with the current tab.
+"
+" Copyright July 17, 2007 Christian J. Robinson <infynity@onewest.net>
+"
+" Distributed under the terms of the Vim license.  See ":help license".
+
+" Usage:
+"
+" :Tabmerge [tab number] [top|bottom|left|right]
+"
+" The tab number can be "$" for the last tab.  If the tab number isn't
+" specified the tab to the right of the current tab is merged.  If there
+" is no right tab, the left tab is merged.
+"
+" The location specifies where in the current tab to merge the windows.
+" Defaults to "top".
+"
+" Limitations:
+"
+" Vertical windows are merged as horizontal splits.  Doing otherwise would be
+" nearly impossible.
+
+if v:version < 700
+	echoerr "Tabmerge.vim requires at least Vim version 7"
+	finish
+endif
+
+command! -nargs=* Tabmerge call Tabmerge(<f-args>)
+
+function! Tabmerge(...)  " {{{3
+	if a:0 > 2
+		echohl ErrorMsg
+		echo "Too many arguments"
+		echohl None
+		return
+	elseif a:0 == 2
+		let tabnr = a:1
+		let where = a:2
+	elseif a:0 == 1
+		if a:1 =~ '^\d\+$' || a:1 == '$'
+			let tabnr = a:1
+		else
+			let where = a:1
+		endif
+	endif
+
+	if !exists('l:where')
+		let where = 'top'
+	endif
+
+	if !exists('l:tabnr')
+		if type(tabpagebuflist(tabpagenr() + 1)) == 3
+			let tabnr = tabpagenr() + 1
+		elseif type(tabpagebuflist(tabpagenr() - 1)) == 3
+			let tabnr = tabpagenr() - 1
+		else
+			echohl ErrorMsg
+			echo "Already only one tab"
+			echohl None
+			return
+		endif
+	endif
+
+	if tabnr == '$'
+		let tabnr = tabpagenr(tabnr)
+	else
+		let tabnr = tabnr
+	endif
+
+	let tabwindows = tabpagebuflist(tabnr)
+
+	if type(tabwindows) == 0 && tabwindows == 0
+		echohl ErrorMsg
+		echo "No such tab number: " . tabnr
+		echohl None
+		return
+	elseif tabnr == tabpagenr()
+		echohl ErrorMsg
+		echo "Can't merge with the current tab"
+		echohl None
+		return
+	endif
+
+	if where =~? '^t\(op\)\?$'
+		let where = 'topleft'
+	elseif where =~? '^b\(ot\(tom\)\?\)\?$'
+		let where = 'botright'
+	elseif where =~? '^l\(eft\)\?$'
+		let where = 'leftabove vertical'
+	elseif where =~? '^r\(ight\)\?$'
+		let where = 'rightbelow vertical'
+	else
+		echohl ErrorMsg
+		echo "Invalid location: " . a:2
+		echohl None
+		return
+	endif
+
+	let save_switchbuf = &switchbuf
+	let &switchbuf = ''
+
+	if where == 'top'
+		let tabwindows = reverse(tabwindows)
+	endif
+
+	for buf in tabwindows
+		exe where . ' sbuffer ' . buf
+	endfor
+
+	exe 'tabclose ' . tabnr
+
+	let &switchbuf = save_switchbuf
+endfunction
+
+" vim:fdm=marker:fdc=2:fdl=1:
+
+
+"YCM {{{2
+
+let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
 "matchit {{{2
 "(2018-02-05) 
 "make % works the best using default matchit plugin(not loaded by default)
@@ -3282,9 +3771,9 @@ call plug#end()
 "(Sat, Oct 14, 2017  4:19:56 PM) 
 " great, put cursor under a link, gx to open it in browser
 " issue: does not work for markdown if installed the markdown plugin
-let g:netrw_nogx = 1 " disable netrw's gx mapping.
-nmap gx <Plug>(openbrowser-smart-search)
-vmap gx <Plug>(openbrowser-smart-search)
+"let g:netrw_nogx = 1 " disable netrw's gx mapping.
+"nmap gx <Plug>(openbrowser-smart-search)
+"vmap gx <Plug>(openbrowser-smart-search)
 
 " vim-gist {{{2
 "
@@ -3294,7 +3783,8 @@ if has("win32unix")
     let g:gist_browser_command = 'cygstart %URL% &'
     "let g:gist_browser_command = 'w3m %URL%'
 endif
-let g:gist_open_browser_after_post = 1
+"close browser, annoying on each update
+let g:gist_open_browser_after_post = 0
 
 if executable('pbcopy')
     let g:gist_clip_command = 'pbcopy'
@@ -3307,6 +3797,7 @@ endif
 let g:gist_show_privates = 1
 let g:gist_post_private = 1
 let g:gist_detect_filetype = 1
+let g:gist_namelength = 50
 
 "indent_guides {{{2 
 "The default mapping to toggle the plugin is `<Leader>ig` 
@@ -3320,14 +3811,131 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
 "pymode {{{2
 let g:pymode = 1
 
-"enable code check by default
-let g:pymode_lint = 1
+"let g:pymode_warnings = 1
+
+let g:pymode_lint = 0           "enable code check by default
 let g:pymode_breakpoint = 1
 let g:pymode_breakpoint_bind = '<leader>b'
 
-let g:pymode_rope = 0 
-let g:pymode_rope_lookup_project = 0 
-let g:pymode_rope_complete_on_dot = 0
+let g:pymode_python = 'python3'
+
+nn ,pa :PymodeLintAuto<CR>
+nn ,pt :PymodeLintToggle<CR>
+
+"let g:pymode_folding = 0        "disable folding
+
+"(Tue 14 Jan 2020 09:36:06 AM STD) disable rope, slow on save
+"let g:pymode_rope = 1
+"let g:pymode_rope_lookup_project = 0 
+"let g:pymode_rope_complete_on_dot = 0
+"
+"
+"key-mapping
+    "\r: run code
+    "c-space: autocomplete, press . 
+    "
+    "rope:
+    "<C-c>+d" :show help for object under cursor
+    "<C-c>+ro":organize module import(remove unused one)
+    "<C-c>+g" :goto definition
+    "<C-c>rr  :refactor
+    "
+    "motion:
+    "================  ============================
+    "Key               Command
+    "================  ============================
+    "[[                Jump to previous class or function (normal, visual, operator modes)
+    "]]                Jump to next class or function  (normal, visual, operator modes)
+    "[M                Jump to previous class or method (normal, visual, operator modes)
+    "]M                Jump to next class or method (normal, visual, operator modes)
+    "aC                Select a class. Ex: vaC, daC, yaC, caC (normal, operator modes)
+    "iC                Select inner class. Ex: viC, diC, yiC, ciC (normal, operator modes)
+    "aM                Select a function or method. Ex: vaM, daM, yaM, caM (normal, operator modes)
+    "iM Select inner function or method. Ex: viM, diM, yiM, ciM (normal, operator modes)
+
+"commands:
+    "*:PymodeLint* -- Check code in current buffer
+    "*:PymodeLintToggle* -- Toggle code checking
+    "*:PymodeLintAuto* -- Fix PEP8 errors in current buffer automatically
+    
+""python-mode other info:
+"https://blog.csdn.net/Demorngel/article/details/71158792
+    ""开启警告
+    "let g:pymode_warnings = 0
+    ""保存文件时自动删除无用空格
+    "let g:pymode_trim_whitespaces = 1
+    "let g:pymode_options = 1
+    ""显示允许的最大长度的列
+    "let g:pymode_options_colorcolumn = 1
+    ""设置QuickFix窗口的最大，最小高度
+    "let g:pymode_quickfix_minheight = 3
+    "let g:pymode_quickfix_maxheight = 10
+    ""使用python3
+    "let g:pymode_python = 'python3'
+    ""使用PEP8风格的缩进
+    "let g:pymode_indent = 1
+    ""取消代码折叠
+    "let g:pymode_folding = 0
+    ""开启python-mode定义的移动方式
+    "let g:pymode_motion = 1
+    ""启用python-mode内置的python文档，使用K进行查找
+    "let g:pymode_doc = 1
+    "let g:pymode_doc_bind = 'K'
+    ""自动检测并启用virtualenv
+    "let g:pymode_virtualenv = 1
+    ""不使用python-mode运行python代码
+    "let g:pymode_run = 0
+    ""let g:pymode_run_bind = '<Leader>r'
+    ""不使用python-mode设置断点
+    "let g:pymode_breakpoint = 0
+    ""let g:pymode_breakpoint_bind = '<leader>b'
+    ""启用python语法检查
+    "let g:pymode_lint = 1
+    ""修改后保存时进行检查
+    "let g:pymode_lint_on_write = 0
+    ""编辑时进行检查
+    "let g:pymode_lint_on_fly = 0
+    "let g:pymode_lint_checkers = ['pyflakes', 'pep8']
+    ""发现错误时不自动打开QuickFix窗口
+    "let g:pymode_lint_cwindow = 0
+    ""侧边栏不显示python-mode相关的标志
+    "let g:pymode_lint_signs = 0
+    ""let g:pymode_lint_todo_symbol = 'WW'
+    ""let g:pymode_lint_comment_symbol = 'CC'
+    ""let g:pymode_lint_visual_symbol = 'RR'
+    ""let g:pymode_lint_error_symbol = 'EE'
+    ""let g:pymode_lint_info_symbol = 'II'
+    ""let g:pymode_lint_pyflakes_symbol = 'FF'
+    ""启用重构
+    "let g:pymode_rope = 1
+    ""不在父目录下查找.ropeproject，能提升响应速度
+    "let g:pymode_rope_lookup_project = 0
+    ""光标下单词查阅文档
+    "let g:pymode_rope_show_doc_bind = '<C-c>d'
+    ""项目修改后重新生成缓存
+    "let g:pymode_rope_regenerate_on_write = 1
+    ""开启补全，并设置<C-Tab>为默认快捷键
+    "let g:pymode_rope_completion = 1
+    "let g:pymode_rope_complete_on_dot = 1
+    "let g:pymode_rope_completion_bind = '<C-Tab>'
+    ""<C-c>g跳转到定义处，同时新建竖直窗口打开
+    "let g:pymode_rope_goto_definition_bind = '<C-c>g'
+    "let g:pymode_rope_goto_definition_cmd = 'vnew'
+    ""重命名光标下的函数，方法，变量及类名
+    "let g:pymode_rope_rename_bind = '<C-c>rr'
+    ""重命名光标下的模块或包
+    "let g:pymode_rope_rename_module_bind = '<C-c>r1r'
+    ""开启python所有的语法高亮
+    "let g:pymode_syntax = 1
+    "let g:pymode_syntax_all = 1
+    ""高亮缩进错误
+    "let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+    ""高亮空格错误
+    "let g:pymode_syntax_space_errors = g:pymode_syntax_all
+    "————————————————
+    "版权声明：本文为CSDN博主「SorelCheung」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+    "原文链接：https://blog.csdn.net/Demorngel/article/details/71158792
+
 
 "syntastic {{{2
 "(2016-03-10) 
@@ -3348,7 +3956,7 @@ let g:syntastic_mode_map = { 'passive_filetypes': ['asciidoc'] }
 "(2014-11-22) 
 vnoremap <silent> ,yd <Esc>:Ydv<CR> 
 nnoremap <silent> ,yd <Esc>:Ydc<CR> 
-noremap ,yy :Yde<CR>
+noremap ,yD :Yde<CR>
 
 "yank and save in a file, then paste into other vim instance (2015-12-01) 
 "vmap <silent> ,yy y:new<CR>:call setline(1,getregtype())<CR>o<Esc>P:wq! ~/vim-reg.txt<CR>
@@ -3384,14 +3992,6 @@ nn ,bs :call PerformanceTest('stop')<cr>
 "autocmd BufEnter *.sh nested TagbarOpen
 "autocmd BufEnter *.pl nested TagbarOpen
 
-"vimshell--- {{{2
-
-"not working
-"in <C-p> <Plug>(vimshell_previous_prompt)
-"let g:vimshell_cd_command='TabpageCD'
-let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
-
-
 "supertab--- {{{2
 "
 "no button to turn on/off?
@@ -3400,11 +4000,23 @@ let g:SuperTabMappingBackward = '<tab>'
 "Acp(autocomplpop) {{{2
 
 "enable (,ac) only when needed (new word spelling prompt)
-let g:acp_enableAtStartup = 0
+let g:acp_enableAtStartup = 1
+
+"unite.vim--- {{{2
+
+"required by vimshell to get previous command history (c-l)
+
+"vimshell--- {{{2
+
+"not working
+"in <C-p> <Plug>(vimshell_previous_prompt)
+"let g:vimshell_cd_command='TabpageCD'
+let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
+
 
 "neocomplete --- {{{2
 "enable (,nc) only when needed
-let g:neocomplete#enable_at_startup = 0
+let g:neocomplete#enable_at_startup = 1
 "(2014-11-07), copied from help neocomplete 
 ""Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 "" Disable AutoComplPop.
@@ -3656,27 +4268,50 @@ command! TNoName call s:RemoveTabName()
 
 "for https://github.com/plasticboy/vim-markdown, removed(slow)
 let g:vim_markdown_frontmatter=1
+let g:vim_markdown_folding_disabled = 1
 
 "vim-airline--- {{{2
-"
+"for some reason, source vimrc again will lose tabline
+"https://github.com/vim-airline/vim-airline/issues/1483
+"(2019-10-25) 
+"disable this plugin
+"let g:loaded_airline = 1
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
 let g:airline_powerline_fonts = 1
 let g:airline_left_sep='>'
 let g:airline_right_sep='<'
-"disable this plugin
-"let g:loaded_airline = 1
-"let g:airline_theme             = 'powerlineish'
+let g:airline_left_sep = '▶'
+let g:airline_left_alt_sep='▶'
+let g:airline_right_sep = '◀'
+let g:airline_right_alt_sep = '◀'
+let g:airline_symbols.branch = '⎇'
+"this cause the current tab not showing text
+let g:airline_theme = 'powerlineish'
 
 "let g:airline#extensions#branch#enabled = 1
 "let g:airline#extensions#syntastic#enabled = 1
-"let g:airline#extensions#tabline#enabled = 1
-"let g:airline#extensions#tabline#tab_nr_type = 1
+"
+"enable enhanced tabline
+let g:airline#extensions#tabline#enabled= 1
+"1 show just tab number, 2 show tab and number of split(no use)
+let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+"disable the up/right display of buf name
+let g:airline#extensions#tabline#show_splits = 0
+"let g:airline#extensions#tabline#show_buffers = 1
+"show buffer number
+let g:airline#extensions#tabline#buffer_nr_show = 1
+"let g:airline#extensions#tabline#show_tabs = 1
+"
+"
 "let g:airline#extensions#bufferline#enabled = 1
-"let g:airline#extensions#tabline#buffer_nr_show = 1
 
 "testing (2017-05-02) 
 let g:airline_inactive_collapse=1
 "let g:airline#extensions#tabline#show_buffers = 1
-"let g:airline#extensions#tabline#fnametruncate = 0
+let g:airline#extensions#tabline#fnametruncate = 10
 
 "bash-support--- {{{2
 "merged in vim-plugin, auto pathogen ized
@@ -3691,8 +4326,8 @@ let g:BASH_Company      = 'Juniper Networks'
 "search for "drawit-tip", there are this solution
 "type "map ", then 3 ctrl-v, then the home or end key, a space, then "<home>"
 "or "<end>"
-map [1~ <home>
-map [4~ <end>
+nmap [1~ <home>
+nmap [4~ <end>
 
 "fun! SetDrawIt(di_vert,di_horiz,di_plus,di_upleft,di_upright,di_cross,di_ellipse)
 let g:DrawitDrawingCH = 0
@@ -3711,7 +4346,7 @@ function! ToggleDrawitDrawingCH()
         echo "set drawit charactor as default"
     endif
 endfunction
-map ,td :call ToggleDrawitDrawingCH()<CR>
+nmap ,td :call ToggleDrawitDrawingCH()<CR>
 
 
 "map ,dd :call SetDrawIt('.','.','.','\','/','X','*')
@@ -3748,7 +4383,7 @@ let g:easytags_async=1
 let g:easytags_auto_highlight=0
 
 
-"Voom {{{2
+"voom {{{2
 "by def voom map it's voom_tab_key to <tab>|<C-I> to toggle bet. tree&body
 "but C-I|tab is useful to jump forward (oppsite to C-O),map voom_tab_key to
 "other key (here it is backspace), will get the vim C-I back
@@ -3764,7 +4399,7 @@ let g:voom_tab_key = '<BS>'
 let g:voom_ft_modes = {'asciidoc': 'asciidoc',
     \'asciidoc2': 'asciidoc', 
     \'vimwiki': 'vimwiki',
-    \'markdown': 'markdown',
+    \'markdown': 'pandoc',
     \'md': 'markdown',
     \'mkd': 'markdown',
     \'python': 'python',
@@ -3884,9 +4519,9 @@ exe "map <F6> A {"."{{1"
 "   
 " call Voom
 "map <F6> :edit!<CR> :perldo s/(.*?)(\(\S+\))??(\#\|\w\w+>\|^->\|slot \d\d?->)(\s*\w+.*$)/$2$3$4 \{\{\{1/gi <CR> :Voom <CR>
-map <C-F6> :perldo s/(.*?)(\(\S+\))??(\#\|\w\w+>\|^->\|slot \d\d?->)(\s*\w+.*$)/$2$3$4 \{\{\{1/gi <CR> :Voom <CR>
+nmap <C-F6> :perldo s/(.*?)(\(\S+\))??(\#\|\w\w+>\|^->\|slot \d\d?->)(\s*\w+.*$)/$2$3$4 \{\{\{1/gi <CR> :Voom <CR>
 " 				$1 	$2 	$3 				$4
-map <S-F6> :perldo s/(\w+ \{)/$1 \{\{\{1/gi <CR> :Voom <CR>
+nmap <S-F6> :perldo s/(\w+ \{)/$1 \{\{\{1/gi <CR> :Voom <CR>
 
     "this was designed to only expose the 1st level config CLI, but not work
     "looks perl don't have ability to say "anything but not abc"
@@ -4163,6 +4798,7 @@ let VIMPRESS =
 "
 "
 
+"Tabularize {{{2
 "this doesn't work as expected
 "(01/19/2013) this was found to bring an issue:
 "   in block visual mode, when trying to insert a '|'
@@ -4181,6 +4817,10 @@ function! s:align()
     call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
   endif
 endfunction
+
+nmap ,tg ,v:Tabularize /\s\+\zs/l1<CR>
+vmap ,tg :Tabularize /\s\+\zs/l1<CR>
+
 "icalendar syntax--- {{{2
 autocmd! BufRead,BufNewFile *.ics setfiletype icalendar
 
@@ -4308,9 +4948,16 @@ nn ,cc :call MyConqueTermRepeat2("pwd",2,1)
 let g:__XPTEMPLATE_VIM = 100
 
 "netrw {{{2
-
+let g:netrw_preview   = 1       "vertial preview
+let g:netrw_liststyle = 3       "default to use tree view
+let g:netrw_winsize   = 30      "dir list use 30% of size
+let g:netrw_altv = 1
+let g:netrw_alto = 0
 let g:netrw_browsex_viewer= "gnome-open"
-
+if has("windows")
+    "not working well
+    let g:netrw_browsex_viewer= "setsid wstart"
+endif
 if has("win32unix")
     let g:netrw_browsex_viewer= "/cygdrive/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
     let g:netrw_browsex_viewer= 'cygstart'      "does not work with fresh install in new pc(2018-01-13) 
@@ -4325,7 +4972,7 @@ function! HandleURL()
     echo "No URI found in line."
   endif
 endfunction
-map <leader>u :call HandleURL()<cr>
+nmap <leader>u :call HandleURL()<cr>
 
 "use the tree style as default listing style.
 let g:netrw_liststyle= 4
@@ -4347,11 +4994,17 @@ let g:netrw_liststyle= 4
 let g:netrw_dirhistmax = 50
 
 "nerdtree {{{2
+nn ,nn :NERDTreeToggle<CR>
+let g:NERDTreeMouseMode=3
+let g:NERDTreeShowBookmarks=1
 "these does not work, simply change the source code plugin/nerd_tree.vim
-"let g:NERDTreeMapOpenSplit 's'
-"let g:NERDTreeMapPreviewSplit 'gs'
-"let g:NERDTreeMapOpenVSplit 'v'
-"let g:NERDTreeMapPreviewVSplit 'gv'
+let g:NERDTreeMapOpenSplit='s'
+let g:NERDTreeMapPreviewSplit='gs'
+let g:NERDTreeMapOpenVSplit='v'
+let g:NERDTreeMapPreviewVSplit='gv'
+let g:NERDTreeMapHelp='h'
+"5. Directories are first, newest to oldest, then everything else, newest to oldest.
+let g:NERDTreeSortOrder=['\/$', '*', '[[-timestamp]]']
 "
 "Mark--- {{{2
 "By default, the Mark plug indeed adds the highlighted text to both input and
@@ -4364,6 +5017,9 @@ let g:mwHistAdd = ''
 "TOhtml {{{2
 "for TOhtml, don’t show line numbers, and also seems no color, just raw
 let html_number_lines = 0 
+"(2019-09-20) 
+"better to have line number so convinient for reference
+:unlet g:html_number_lines
 let html_use_css = 1  "Use stylesheet instead of inline style
 "let html_no_pre = 1  "don’t wrap lines in
 "(2018-02-01) this becomes necessary, not sure why previously no need...
@@ -4496,6 +5152,264 @@ let g:mwDefaultHighlightingPalette = 'extended'
 "let it 1 if it's too slow for long file w/ CN CH.
 let g:Align_xstrlen= 3
 
+"jupytext.vim {{{2
+let g:jupytext_enable = 0
+
+nn ,jh :w !jupytext --from md --to ipynb --set-kernel python3 \| papermill \| jupyter nbconvert --stdin --output '%:r.html' <CR><CR>
+nn ,jH :!jupyter nbconvert %:r.ipynb; jupyter nbconvert '%:r.ipynb' --to asciidoc; asciidoctor '%:r.asciidoc' -a toc=right -a toclevels=5 -o '%:r.toc.html'&<CR>
+nn ,jH :!
+  \jupyter nbconvert '%:r.ipynb'; 
+  \jupyter nbconvert '%:r.ipynb' --to asciidoc; 
+  \asciidoctor '%:r.asciidoc' -a toc=right -a toclevels=5 -a doctype=book -a sectnums 
+  \-o '%:r.toc.html'&<CR>
+
+" change style sheet
+" https://asciidoctor.org/docs/produce-custom-themes-using-asciidoctor-stylesheet-factory/
+" jupyter nbconvert to adoc run into bug about heading.
+nn ,jH :!
+  \jupyter nbconvert '%:r.ipynb'; 
+  \jupyter nbconvert '%:r.ipynb' --to asciidoc; 
+  \pandoc -f markdown -t asciidoctor -s '%:r.md' -o '%:r.adoc';
+  \asciidoctor '%:r.asciidoc' -a toc=right -a toclevels=5 -a doctype=book -a sectnums 
+  \-a stylesdir='asciidoctor-stylesheet-factory/stylesheets' -a stylesheet=colony.css 
+  \-o '%:r.asciidoc.html'; 
+  \asciidoctor '%:r.adoc' -a toc=right -a toclevels=5 -a doctype=book -a sectnums 
+  \-a stylesdir='asciidoctor-stylesheet-factory/stylesheets' -a stylesheet=colony.css 
+  \-o '%:r.adoc.html'&<CR>
+
+"asciidoctor -a stylesheet=colony.css -a toc=right -a doctype=book -a stylesdir=~/asciidoctor-stylesheet-factory/stylesheets -a sectnums jiuzhang_basic.asciidoc
+"
+"this is problematic:
+" \-a stylesdir='~/asciidoctor-stylesheet-factory/stylesheets' -a stylesheet=colony.css 
+"asciidoctor: FAILED: input file stylesdir=~/asciidoctor-stylesheet-factory/stylesheets is missing
+"/mnt/c/Users/pings/Dropbox/python/learning_python/jiuzhang/~/asciidoctor-stylesheet-factory/stylesheets/colony.css
+"
+
+"nn ,jS :!jupytext --set-formats ipynb,md,py:hydrogen --sync %<CR>
+nn ,jS :!jupytext --set-formats ipynb,md,py:percent --sync %&<CR>
+nm ,jA ,jS<CR>,jH<CR>
+
+"vim-repl {{{2
+nnoremap ,pr :REPLToggle<Cr>
+
+autocmd Filetype python nnoremap ,pb <Esc>:REPLDebugStopAtCurrentLine<Cr>
+autocmd Filetype python nnoremap ,pn <Esc>:REPLPDBN<Cr>
+autocmd Filetype python nnoremap ,ps <Esc>:REPLPDBS<Cr>
+
+let g:repl_width = 50           "REPL windows width
+let g:repl_position = 3         "REPL windows on right
+let g:sendtorepl_invoke_key = "<leader>w" "default value to send code
+"not to stay at repl win - remain in original file"
+let g:repl_stayatrepl_when_open = 0  
+let g:repl_ipython_version = '7.8.0'
+"add support to .md
+let g:repl_program = {
+			\	'python': 'ipython3',
+                        \       'markdown': 'ipython3',
+                        \       'asciidoc': 'ipython3',
+			\	'default': 'bash'
+			\	}
+let g:repl_exit_commands = {
+			\	'python': 'quit()',
+			\	'ipython3': 'quit()',
+			\	'ipython': 'quit()',
+			\	'bash': 'exit',
+			\	'zsh': 'exit',
+			\	'default': 'exit',
+			\	}
+
+"once user sends a line starts with any pattern contained in the list, whole
+"block will be send automatically.
+"let g:repl_auto_sends = ['class ', 'def ', 'for ', 'if ', 'while ']
+
+"once user sends code which is seperated into multilines, they are combined
+"into one line automatically. For example, if the code is:
+"a = 1+\
+"    2+\
+"    3
+"then a = 1+2+3 will be sent to the repl environment instead of three lines.
+let g:repl_python_automerge = 1
+
+let g:reply_termwin_max_width = 30
+let g:reply_repls = { 'python': ['ipython3'] }
+
+"lens {{{2
+"(Mon 02 Mar 2020 09:03:51 AM STD) 
+let g:lens#disabled_filetypes = ['nerdtree', 'fzf', 'voomtree', 'vim-plug']
+let g:lens#width_resize_max = 80
+let g:lens#disabled = 1
+let g:lens#animate = 0
+
+"gitgutter {{{2
+"is this too agressive?(2020-03-02) 
+set updatetime=100
+
+"startup with a TODO file {{{1
+"(2019-01-17) 
+"if @% == "" && getcwd() == "~/"
+"if @% == ""
+"    :silent edit TODO.adoc
+"endif
+
+"all about colors {{{1
+"highlighted with ColorColumn,Useful to align
+"long code.  Will make screen redrawing slower.
+"and looks annoying when not coding
+"set colorcolumn=80
+
+"set terminal color, def 8.
+"set t_Co doesnt work since it's a var,not option
+"let t_Co=256 			
+
+
+
+"this looks better than default (with which voom fold looks ugly)
+"colorscheme elflord
+"colorscheme molokai
+colorscheme default
+colorscheme koehler
+colorscheme gruvbox     "this has to be after Pathogen setting
+"this generate some warnings
+"colorscheme Tomorrow-Night-Bright 
+"colorscheme torte
+
+"to highlight all non-ascii
+"syntax match nonascii "[^\x00-\x7F]"
+"highlight nonascii guibg=Red ctermbg=2
+
+"(2013-02-26) 
+"toggling between default/koehler/mololai
+"a shortcut/quick way to do a complicated map but bypassing function calls
+nmap ,co :
+    \if g:colors_name == 'default' <Bar>
+        \:colorscheme koehler <Bar>
+    \elseif g:colors_name == 'koehler' <Bar>
+        \:colorscheme molokai <Bar>
+    \else <Bar>
+        \:colorscheme default <Bar>
+    \endif <Bar>
+    \<CR>
+
+"highlight column
+"http://www.vimer.cn/2012/05/vimgvim%E6%94%AF%E6%8C%81%E5%AF%B9%E9%BD%90%E7%BA%BF.html
+"highlight column of current cursor
+function! SetColorColumn()
+    let col_num = virtcol(".")
+    let cc_list = split(&cc, ',')
+    if count(cc_list, string(col_num)) <= 0
+        execute "set cc+=".col_num
+    else
+        execute "set cc-=".col_num
+    endif
+endfunction
+nmap ,tc :call SetColorColumn()<CR>
+
+
+let loaded_setcolors = 1
+" colorscheme names that we use to set color
+let s:mycolors = ['koehler', 'slate', 'torte', 'darkblue', 'delek', 'murphy', 'elflord', 'pablo', 'desert']  
+
+" Set list of color scheme names that we will use, except
+" argument 'now' actually changes the current color scheme.
+function! s:SetColors(args)
+  if len(a:args) == 0
+    echo 'Current color scheme names:'
+    let i = 0
+    while i < len(s:mycolors)
+      echo '  '.join(map(s:mycolors[i : i+4], 'printf("%-14s", v:val)'))
+      let i += 5
+    endwhile
+  elseif a:args == 'all'
+    let paths = split(globpath(&runtimepath, 'colors/*.vim'), "\n")
+    let s:mycolors = uniq(sort(map(paths, 'fnamemodify(v:val, ":t:r")')))
+    echo 'List of colors set from all installed color schemes'
+  elseif a:args == 'my'
+    let c1 = 'default elflord peachpuff desert256 breeze morning'
+    let c2 = 'darkblue gothic aqua earth black_angus relaxedgreen'
+    let c3 = 'darkblack freya motus impact less chocolateliquor'
+    let s:mycolors = split(c1.' '.c2.' '.c3)
+    echo 'List of colors set from built-in names'
+  elseif a:args == 'now'
+    call s:HourColor()
+  else
+    let s:mycolors = split(a:args)
+    echo 'List of colors set from argument (space-separated names)'
+  endif
+endfunction
+
+command! -nargs=* SetColors call s:SetColors('<args>')
+
+" Set next/previous/random (how = 1/-1/0) color from our list of colors.
+" The 'random' index is actually set from the current time in seconds.
+" Global (no 's:') so can easily call from command line.
+function! NextColor(how)
+  call s:NextColor(a:how, 1)
+endfunction
+
+" Helper function for NextColor(), allows echoing of the color name to be
+" disabled.
+function! s:NextColor(how, echo_color)
+  if len(s:mycolors) == 0
+    call s:SetColors('all')
+  endif
+  if exists('g:colors_name')
+    let current = index(s:mycolors, g:colors_name)
+  else
+    let current = -1
+  endif
+  let missing = []
+  let how = a:how
+  for i in range(len(s:mycolors))
+    if how == 0
+      let current = localtime() % len(s:mycolors)
+      let how = 1  " in case random color does not exist
+    else
+      let current += how
+      if !(0 <= current && current < len(s:mycolors))
+        let current = (how>0 ? 0 : len(s:mycolors)-1)
+      endif
+    endif
+    try
+      execute 'colorscheme '.s:mycolors[current]
+      break
+    catch /E185:/
+      call add(missing, s:mycolors[current])
+    endtry
+  endfor
+  redraw
+  if len(missing) > 0
+    echo 'Error: colorscheme not found:' join(missing)
+  endif
+  if (a:echo_color)
+    echo g:colors_name
+  endif
+endfunction
+
+nnoremap ,ci :call NextColor(1)<CR>
+nnoremap ,cI :call NextColor(-1)<CR>
+nnoremap ,cr :call NextColor(0)<CR>
+
+" Set color scheme according to current time of day.
+function! s:HourColor()
+  let hr = str2nr(strftime('%H'))
+  if hr <= 3
+    let i = 0
+  elseif hr <= 7
+    let i = 1
+  elseif hr <= 14
+    let i = 2
+  elseif hr <= 18
+    let i = 3
+  else
+    let i = 4
+  endif
+  let nowcolors = 'elflord morning desert evening pablo'
+  execute 'colorscheme '.split(nowcolors)[i]
+  redraw
+  echo g:colors_name
+endfunction
+"testing changing colorscheme: end===================================
+
 "temporary maps {{{1=
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 func! Diff(a,b)
@@ -4534,8 +5448,8 @@ fun! FindDiffs()
   call setqflist(qf) | cw
 endf
 
-map <F10> :%s/em1/ge-9\/0\/0/g<CR>:%s/em2/ge-9\/0\/1/g<CR>:%s/em3/ge-9\/0\/2/g<CR>:%s/em4/ge-9\/0\/3/g<CR>
-map <S-F10> :%s/ge-9\/0\/0/em1/g<CR>:%s/ge-9\/0\/1/em2/g<CR>:%s/ge-9\/0\/2/em3/g<CR>:%s/ge-9\/0\/3/em4/g<CR>
+"nmap <F10> :%s/em1/ge-9\/0\/0/g<CR>:%s/em2/ge-9\/0\/1/g<CR>:%s/em3/ge-9\/0\/2/g<CR>:%s/em4/ge-9\/0\/3/g<CR>
+"nmap <S-F10> :%s/ge-9\/0\/0/em1/g<CR>:%s/ge-9\/0\/1/em2/g<CR>:%s/ge-9\/0\/2/em3/g<CR>:%s/ge-9\/0\/3/em4/g<CR>
 
 "these are used for dynagen login when preparing CCIE
 "looks stupid, a better solution might be to source a normal mode script
@@ -4678,9 +5592,20 @@ map <S-F10> :%s/ge-9\/0\/0/em1/g<CR>:%s/ge-9\/0\/1/em2/g<CR>:%s/ge-9\/0\/2/em3/g
 "map <C-S-c> "*y
 "map <C-S-v> "*p
 "n/w for consolevim, w/ for gvim
-map <M-o> o<Esc>k
+nmap <M-o> o<Esc>k
 
 "testing, may not working {{{1 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+"https://github.com/google/yapf/blob/master/.vimrc
+" Force indentation styles for this directory
+"autocmd FileType python set shiftwidth=2
+"autocmd FileType python set tabstop=2
+"autocmd FileType python set softtabstop=2
+
+"https://github.com/mindriot101/vim-yapf#why-you-may-not-need-this-plugin
+autocmd FileType python nn ,yp :0,$!yapf<Cr><C-o>
+autocmd FileType python vn ,yp :!yapf<Cr><C-o>
+
 "
 "colorcheme changing {{{2
 "testing changing colorscheme: begin===================================
@@ -4697,114 +5622,13 @@ map <M-o> o<Esc>k
 "   :SetColors                  (display current scheme names)
 " Set the current color scheme based on time of day:
 "   :SetColors now
-if v:version < 700 || exists('loaded_setcolors') || &cp
-  finish
-endif
+"if v:version < 700 || exists('loaded_setcolors') || &cp
+"  finish
+"endif
 
-let loaded_setcolors = 1
-" colorscheme names that we use to set color
-let s:mycolors = ['koehler', 'slate', 'torte', 'darkblue', 'delek', 'murphy', 'elflord', 'pablo', 'desert']  
-
-" Set list of color scheme names that we will use, except
-" argument 'now' actually changes the current color scheme.
-function! s:SetColors(args)
-  if len(a:args) == 0
-    echo 'Current color scheme names:'
-    let i = 0
-    while i < len(s:mycolors)
-      echo '  '.join(map(s:mycolors[i : i+4], 'printf("%-14s", v:val)'))
-      let i += 5
-    endwhile
-  elseif a:args == 'all'
-    let paths = split(globpath(&runtimepath, 'colors/*.vim'), "\n")
-    let s:mycolors = uniq(sort(map(paths, 'fnamemodify(v:val, ":t:r")')))
-    echo 'List of colors set from all installed color schemes'
-  elseif a:args == 'my'
-    let c1 = 'default elflord peachpuff desert256 breeze morning'
-    let c2 = 'darkblue gothic aqua earth black_angus relaxedgreen'
-    let c3 = 'darkblack freya motus impact less chocolateliquor'
-    let s:mycolors = split(c1.' '.c2.' '.c3)
-    echo 'List of colors set from built-in names'
-  elseif a:args == 'now'
-    call s:HourColor()
-  else
-    let s:mycolors = split(a:args)
-    echo 'List of colors set from argument (space-separated names)'
-  endif
-endfunction
-
-command! -nargs=* SetColors call s:SetColors('<args>')
-
-" Set next/previous/random (how = 1/-1/0) color from our list of colors.
-" The 'random' index is actually set from the current time in seconds.
-" Global (no 's:') so can easily call from command line.
-function! NextColor(how)
-  call s:NextColor(a:how, 1)
-endfunction
-
-" Helper function for NextColor(), allows echoing of the color name to be
-" disabled.
-function! s:NextColor(how, echo_color)
-  if len(s:mycolors) == 0
-    call s:SetColors('all')
-  endif
-  if exists('g:colors_name')
-    let current = index(s:mycolors, g:colors_name)
-  else
-    let current = -1
-  endif
-  let missing = []
-  let how = a:how
-  for i in range(len(s:mycolors))
-    if how == 0
-      let current = localtime() % len(s:mycolors)
-      let how = 1  " in case random color does not exist
-    else
-      let current += how
-      if !(0 <= current && current < len(s:mycolors))
-        let current = (how>0 ? 0 : len(s:mycolors)-1)
-      endif
-    endif
-    try
-      execute 'colorscheme '.s:mycolors[current]
-      break
-    catch /E185:/
-      call add(missing, s:mycolors[current])
-    endtry
-  endfor
-  redraw
-  if len(missing) > 0
-    echo 'Error: colorscheme not found:' join(missing)
-  endif
-  if (a:echo_color)
-    echo g:colors_name
-  endif
-endfunction
-
-nnoremap ,ci :call NextColor(1)<CR>
-nnoremap ,cI :call NextColor(-1)<CR>
-nnoremap ,cr :call NextColor(0)<CR>
-
-" Set color scheme according to current time of day.
-function! s:HourColor()
-  let hr = str2nr(strftime('%H'))
-  if hr <= 3
-    let i = 0
-  elseif hr <= 7
-    let i = 1
-  elseif hr <= 14
-    let i = 2
-  elseif hr <= 18
-    let i = 3
-  else
-    let i = 4
-  endif
-  let nowcolors = 'elflord morning desert evening pablo'
-  execute 'colorscheme '.split(nowcolors)[i]
-  redraw
-  echo g:colors_name
-endfunction
-"testing changing colorscheme: end===================================
+"test powerline, not working
+"set rtp+=$(pip show powerline-status | awk '/Location:/{print $2 "/powerline/bindings/vim"}')
+"set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
 "
 "
 ":nnoremap <leader>g :grep <cword> .<cr>
@@ -4916,7 +5740,7 @@ endfunction
 
 
 "auto scrolling,don't work
-map <C-F9> <C-E>:sleep 3500m<CR>j<F8>
+nmap <C-F9> <C-E>:sleep 3500m<CR>j<F8>
 
 
 "match any wrong IP address to error,
@@ -4924,7 +5748,7 @@ map <C-F9> <C-E>:sleep 3500m<CR>j<F8>
 "match errorMsg /\(2[5][6-9]\|2[6-9][0-9]\|[3-9][0-9][0-9]\)[.]\[0-9]\{1,3\}[.][0-9]\{1,3\}[.][0-9]\{1,3\}\|\[0-9]\{1,3\}[.]\(2[5][6-9]\|2[6-9][0-9]\|\\\ \[3-9][0-9][0-9]\)[.][0-9]\{1,3\}[.][0-9]\\{1,3\}\|\[0-9]\{1,3\}[.][0-9]\{1,3\}[.]\(2[5]\\ \[6-9]\|\2[6-9][0-9]|[3-9][0-9][0-9]\)[.][0-9]\{1,3\}\\|[0-9]\{1,3\}[.][0-9]\{1,3\}[.][0-9]\{1,3\}[.]\\(2[5][6-9]\|2[6-9][0-9]\|\[3-9][0-9][0-9]\)/
 
 "this doesn't work:( 
-map <M-2> 2gt
+nmap <M-2> 2gt
 "
 "the following is for tab switching, use alt-n to select tabs
 "looks doesn't work(intercepted by gnome-terminal)
@@ -5013,7 +5837,7 @@ endfunc
 
 command! -range=% -nargs=* GQeachline :<line1>,<line2>call GQeachline(<q-args>)
 
-map ,gQ  :GQeachline<CR>
+nmap ,gQ  :GQeachline<CR>
 
 
 "obsolete--- {{{1
