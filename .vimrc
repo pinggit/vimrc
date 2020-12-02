@@ -1,4 +1,5 @@
 "https://gist.github.com/pinggit/778bce339a58691af257288bde383aa5
+"https://gist.githubusercontent.com/pinggit/778bce339a58691af257288bde383aa5/raw/6cfec9f520109f49e24ffd8f7d702119f4594e74/.vimrc
 "GistID: 778bce339a58691af257288bde383aa5
 "summary {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -62,7 +63,8 @@
 "<space>        c-f
 
 ",leading {{{2
-",ab 		turn to (asciidoc) bullet list(add * in front of line)
+",ab 		asciidoc: blue, word
+",aB 		turn to (asciidoc) bullet list(add * in front of line)
 ",ac            toggle acp(autocomplpop)
 ",ad		archive done
 ",aD		archive done reopen
@@ -74,28 +76,31 @@
 "
 ",ai            markdown link to asciidoc link
 "               asciiart to image (disabled)
-",al 		insert a list block
-",aL 		insert a literal block
-",am 		insert a literal block with macro(ifdef):start
-",aM 		insert a literal block with macro(ifdef):end
-",an 		[v]making a number list(add "1.  " in front of a line)
-",aN 		insert a (multi-parag) note block
-",ao 		overline for a line
-",aO 		overline for a word (not done)
+",al 		asciidoc: insert a list block
+",as 		asciidoc: insert a source sh block
+",aS 		asciidoc: insert a sidebar block
+",aL 		asciidoc: insert a literal block
+",am 		asciidoc: insert a literal block with macro(ifdef):start
+",aM 		asciidoc: insert a literal block with macro(ifdef):end
+",an 		asciidoc: [v]making a number list(add "1.  " in front of a line)
+",aN 		asciidoc: insert a (multi-parag) note block
+",ao 		asciidoc: overline for a line
+",aO 		asciidoc: overline for a word (not done)
 ",ap 		asciidoc to pdf 
 "               [v]ArchiveNotDone
 ",aP 		asciidoc to pdf
-",aq 		qanda
-",ar 		asciidoc ,red, line
-",aR 		asciidoc ,red, word,not done
-",as 		insert an asciidoc sidebar block
-",at 		insert table
-",aT 		insert table, with header/footer
-",au 		underline for a line
-",aU 		underline for a word (not done)
+",aq            asciidoc: insert a list block: subs="quotes"
+",aQ 		asciidoc: qanda
+",aR 		asciidoc: red, line
+",ar 		asciidoc: red, current word, normal and visual
+",at 		asciidoc: insert table
+",aT 		asciidoc: insert table, with header/footer
+",au 		asciidoc: underline for a line
+",aU 		asciidoc: underline for a word (not done)
+",aw            asciidoc to word (docx), by pandoc
 
-",bb            book format2
-",bf            book format
+",bb            asciidoc: book format2
+",bf            asciidoc: book format
 ",bt 		performance(benchmark) test start
 ",bs		performance(benchmark) test stop
 
@@ -106,11 +111,14 @@
 ",co            colorscheme toggling
 ",ci,cI,cr      iterate next,prev,random colorscheme
 "
-",cv 		Conqterm, send visual text to recent conqterm buffer
+",cv 		
+"               "deprecated:Conqterm, send visual text to recent conqterm buffer
 "                   (disabled, not quite oftenly used)
-"               start conqterm in split window(vertically) 
-",ct            start conqterm in new tab
-",cs            start conqterm in split window(herizontally)
+"               "deprecated:start conqterm in split window(vertically) 
+",ct            
+"               "deprecated:start conqterm in new tab
+",cs            :sum of visually selected num column
+"               "deprecated:start conqterm in split window(herizontally)
 ",cp            :CtrlP
 ",cm            :CtrlPMRU<CR>
 ",cb            :CtrlPBuffer
@@ -434,10 +442,24 @@ if v:version >= 800
     "this does not work yet
     "tnoremap <c-w>o :call Ctrlwo()<CR>
 
-    if v:version > 800
-        set termwinscroll=100000000000
-    endif
+    set termwinscroll=100000000000
 endif
+
+"if v:version > 800
+"    "spare ctrl keys in bash
+"    "set termwinkey=<C-I>
+"    "set termwinkey=<C-J>
+"    "set termwinkey=<C-O>
+"    set termwinkey=<c-m>
+"    tnoremap <esc><esc> <C-m>N
+"    set termwinscroll=100000000000
+"    "this delays c-w in bash
+"    "tmap <c-w>o <c-m>N<c-m>oi
+"endif
+
+
+
+
 
 ""must have mini--- {{{2
 ""  for fast paste into other machines
@@ -728,10 +750,11 @@ set linebreak 			"break at word, not CH
 "see gmail thread: vim: 有没有万能的中文识别？
 "looks either ucs-bom, or utf-16le, will be fine, for youdao new word
 "http://www.cnblogs.com/jaiho/archive/2011/08/24/2056375.html
-set    termencoding=utf-8
-set    fileformats=unix,dos,mac
-set    encoding=utf-8
-set    fileencodings=ucs-bom,utf-8,gk2312,gbk,gb18030,cp936,latin1,utf-16le
+set termencoding=utf-8
+"causing problem(2020-04-17): in a v7.4 server treat log as mac, all one line!
+"set fileformats=unix,dos,mac
+set encoding=utf-8
+set fileencodings=ucs-bom,utf-8,gk2312,gbk,gb18030,cp936,latin1,utf-16le
 
 				
 "need to turn off when 'gqap' provide wired result (for a text blocks)
@@ -774,7 +797,7 @@ set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 "enter same folder as current file in buffer
 "great for NERDTreeToggle(2019-10-25) 
 "autocmd BufEnter * lcd %:p:h
-autocmd BufEnter * if &buftype != "terminal" | lcd %:p:h
+autocmd BufEnter * if &buftype !=# "terminal" | lcd %:p:h | endif
 
 "leetcode cli {{{2
 "nn ,et :!leetcode test %<CR>
@@ -814,8 +837,7 @@ augroup END
 au BufNewFile,BufRead *.yaml set filetype=ansible
 
 "preconfigured macro content to convert epoch time, use register q and a
-let @q = '0wwww"ay10lcw=strftime("%T", @a)
-j'
+let @q = '0wwww"ay10lcw=strftime("%T", @a)j'
 "go left/right tab
 nn <s-a-left> gT
 nn <s-a-right> gt
@@ -842,7 +864,16 @@ endfunction
 
 
 "this will overide some good thing (like :cw)
+"TODO: need to except term mode
 nn <CR> <C-W>w
+"
+"nn <expr> <CR> <C-W>w if &buftype !=# "terminal" | endif
+"func! Enter()
+"    if &buftype !=# "terminal"
+"        <C-w>w
+"    endif
+"endf
+"nn <expr> <CR> Enter()
 
 "(2014-11-08) disable original vim c-wc-o (:only) and make it same as ZoomWin
 nmap <C-w><C-o> <C-w>o
@@ -1280,12 +1311,13 @@ autocmd BufReadPost *.rtf %!catdoc -w "%"
 autocmd FileReadPost *.rtf %!catdoc -w "%"
 
 "html2text file.html
-autocmd BufReadPre *.*html set ro
-autocmd FileReadPre *.*html set ro
-autocmd BufReadPre *.*html set hlsearch!
-autocmd FileReadPre *.*html set hlsearch!
-autocmd BufReadPost *.*html %!html2text "%"
-autocmd FileReadPost *.*html %!html2text "%"
+"(2020-06-03) disable to edit remark.js
+"autocmd BufReadPre *.*html set ro
+"autocmd FileReadPre *.*html set ro
+"autocmd BufReadPre *.*html set hlsearch!
+"autocmd FileReadPre *.*html set hlsearch!
+"autocmd BufReadPost *.*html %!html2text "%"
+"autocmd FileReadPost *.*html %!html2text "%"
 
 "testing for file.htm
 autocmd BufReadPre *.*htm set ro
@@ -1351,11 +1383,24 @@ nmap ,tv
     \:set syntax=ON<CR>
 
 
-"overline--- {{{3
+"linethrough--- {{{3
 nn ,ag ^i[line-through]#<esc>g_a#<esc>
 nn ,ao ^i[overline]#<esc>g_a#<esc>
+
+"underline a line, or visually selected words
 nn ,au ^i[underline]#<esc>g_a#<esc>
-nn ,ar ^i[red]#<esc>g_a#<esc>
+vn ,au s[underline]#<c-r>"#<esc>
+
+
+"mark red current word
+nn ,ar :s/\(<c-r>=expand("<cword>")<cr>\)/[red]#\1#/g<CR>
+"not working
+"vn ,ar mboma<esc>i[red]#<esc>'ba#<esc>gvo
+"mark red visual selected words
+vn ,ar s[red]#<c-r>"#<esc>
+
+nn ,ab :s/\(<c-r>=expand("<cword>")<cr>\)/[blue]#\1#/g<CR>
+nn ,aR ^i[red]#<esc>g_a#<esc>
 
 "Bullet list--- {{{3
 "from book <<hacking vim>>
@@ -1365,7 +1410,7 @@ function! BulletList()
 "ping: rm the heading space, no need
     call setline(lineno, "* " . getline(lineno))
 endfunction
-vnoremap ,ab :call BulletList()<CR>
+vnoremap ,aB :call BulletList()<CR>
 
 "numbered list--- {{{3
 
@@ -1390,27 +1435,37 @@ function! NumberList() range
 endfunction
 vnoremap ,an :call NumberList()<CR>
 
-nn ,aq o<c-o>0
+"making an asciidoc block {{{3
+"nn ,al 0o----<cr>----<cr><esc>k
+"(2018-02-21) this might be more frequently used
+"nn ,al {i----<esc>}i----<esc>o
+"(2019-06-04) make it always jump back to beginning in the end
+nn ,al {i----<esc>}i----<esc>{
+nn ,aS {i****<esc>}i****<esc>{
+
+"vn ,al mboma<esc>O<esc>0i----<esc>'bo<esc>0i----<esc>gvo
+vn ,al mboma<esc>O<esc>0i----<esc>'bo<esc>0i----<esc>gv
+vn ,aS mboma<esc>O<esc>0i****<esc>'bo<esc>0i****<esc>gv
+
+nn ,aL 0o....<cr>....<cr><esc>k
+vn ,as mboma<esc>O<esc>0i[source, sh, linenums]<cr>----<esc>'bo<esc>0i----<esc>gvo
+
+nn ,aq {i[subs="quotes"]<cr>----<esc>}i----<esc>{
+nn ,aQ o<c-o>0
 	\[qanda]<cr>
 	\.Q&A<cr>
 	\Question 1::<cr>
 	\Answer 1<cr>
 	\<esc>2k
 
-"making an asciidoc block {{{3
-nn ,al 0o----<cr>----<cr><esc>k
-"(2018-02-21) this might be more frequently used
-nn ,al {i----<esc>}i----<esc>o
-vn ,al mboma<esc>O<esc>0i----<esc>'bo<esc>0i----<esc>gvo
-"(2019-06-04) make it always jump back to beginning in the end
-nn ,al {i----<esc>}i----<esc>{
-
-vn ,al mboma<esc>O<esc>0i----<esc>'bo<esc>0i----<esc>gv
-
-nn ,aL 0o....<cr>....<cr><esc>k
-nn ,as 0o****<cr>****<cr><esc>k
-
+"v1
+"![virtio](./extracted-media-ContrailPerformanceGuidev3.2/media/image29.png)
+"image::extracted-media-ContrailPerformanceGuidev3.2/media/image29.png[]
 nn ,ai 0dwwcw::<esc>A<BS>[]<esc>
+"v2:
+"![virtio](./extracted-media-ContrailPerformanceGuidev3.2/media/image29.png)
+"image::extracted-media-ContrailPerformanceGuidev3.2/media/image29.png[virtio]
+nn ,ai ^dw"act]image<esc>wcw::<esc>A<BS>[<c-r>a]<esc>
 
 nn ,am o<c-o>0
     	    \ifdef::basebackend-html[[subs="quotes"]]
@@ -1704,7 +1759,7 @@ command! Asciidoc2PDF1 :w|!a2x
     \ -a pygments -d book
     \ -D ~/Dropbox/temp-transfer/ "%"
 
-"overide with asciidoctor-pdf way (2015-12-11) 
+"overided with asciidoctor-pdf way (2015-12-11) 
 nmap ,ap :w !a2x 
     \ -f pdf 
     \ --verbose --no-xmllint 
@@ -1824,10 +1879,15 @@ endfunction
 "phaseI: simple vmap, no arguments pass {{{4
 "nn ,ah :w !asciidoc -o ~/Dropbox/temp-transfer/temp.html -a toc - 
 "    \ \| gnome-open ~/Dropbox/temp-transfer/temp.html<CR> 
-nn ,ah :w !asciidoctor -o '%:r.html' -<CR>
-nn ,ap :w !asciidoctor -r asciidoctor-pdf -b pdf -a allow-uri-read -
+"nn ,ah :w !asciidoctor -o '%:r.html' -<CR><CR>
+nn ,ah :w !asciidoctor -a data-uri -o '%:r.html' - &<CR><CR>
+"asciidoctor --backend docbook --out-file - $INPUT_ADOC.adoc|pandoc --from docbook --to docx --output $INPUT_ADOC.adoc.docx &
+nn ,aw :!asciidoctor --backend docbook -a word --out-file - % <bar> pandoc --from docbook --to docx --output '%.docx' & <CR><CR>
+nn ,ap :w !asciidoctor -a data-uri -r asciidoctor-pdf -b pdf -a allow-uri-read -
 vn ,ah :!asciidoc -o - - 
 vn ,ah :w !asciidoctor - -o ~/Dropbox/temp.html
+"(2020-05-31) trying asciidoctor-revealjs to create html5 slides
+nn ,ap :!bundle exec asciidoctor-revealjs % <CR><CR>
 
 "map but don't return in the end, leave chance to change
 nmap ,aH :w !asciidoc
@@ -1911,10 +1971,8 @@ function! Log2AsciidocClean()
 
 "clean the file
     "remove some special CH, like 
-    :%s#\r\|\s\=\(\|
-\)##
-    :%s#\(\|
-\)##
+    :%s#\r\|\s\=\(\|\)##
+    :%s#\(\|\)##
     "turn  into delete (fritzophrenic@gmail.com)
     :g//while getline('.') =~ '[^]' | s/[^]//g | endwhile
 
@@ -3226,10 +3284,11 @@ nmap <S-F8> :let @" = expand("%:p")<enter>
 nmap <F9> <ESC>qqJjq@q
 
 "for vim under tmux
-nnoremap ^[[1;2D <ESC><c-w>>
-nnoremap ^[[1;2C <ESC><c-w><
-nnoremap ^[[1;2A <ESC><c-w>+
-nnoremap ^[[1;2B <ESC><c-w>-
+"???(2020-03-22) 
+"nnoremap ^[[1;2D <ESC><c-w>>
+"nnoremap ^[[1;2C <ESC><c-w><
+"nnoremap ^[[1;2A <ESC><c-w>+
+"nnoremap ^[[1;2B <ESC><c-w>-
 
 "use s-arrow key to resize window
 "(2018-03-13) with ,h and ,H for same goal, maybe use this to scroll quick horizontally
@@ -3384,18 +3443,6 @@ nn ,gi :Gist -p<CR>
 
 "plugin tuning options {{{1
 
-"JiraVim {{{2
-let g:jiraVimDomainName = "contrail-jws"
-let g:jiraVimDomainName = "http://contrail-jws.atlassian.net"
-let g:jiraVimEmail = "pings@juniper.net"
-let g:jiraVimToken = "SqSU8lTerMSENhQ9rSqcC8DE"
-
-"AsyncRun {{{2
-"https://github.com/skywind3000/asyncrun.vim/wiki/FAQ#cant-see-the-realtime-output-when-running-a-python-script
-"disable python's stdout buffering when running in background
-let $PYTHONUNBUFFERED = 0
-let g:asyncrun_open = 8         "auto open qfix?
-
 "vim-plug {{{2
 "install plugins automatically
 "
@@ -3442,7 +3489,6 @@ Plug 'vim-scripts/DrawIt'
 Plug 'vim-scripts/VisIncr'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-easytags'
-Plug 'ianva/vim-youdao-translater'
 Plug 'easymotion/vim-easymotion'
 Plug '907th/vim-auto-save'
 
@@ -3480,25 +3526,245 @@ Plug 'tpope/vim-obsession'
 "Plug 'Valloric/YouCompleteMe'
 Plug 'vim-scripts/visSum.vim'
 Plug 'sk1418/howmuch'
-Plug 'w0rp/ale'
 Plug 'chase/vim-ansible-yaml'
 Plug 'vim-scripts/ZoomWin'              "add zoomwin
 Plug 'farmergreg/vim-lastplace'
 Plug 'sillybun/vim-repl'                "useful (sometimes buggy)
 Plug 'rhysd/reply.vim', { 'on': ['Repl', 'ReplAuto'] }
 Plug 'skywind3000/asyncrun.vim'         "very good
-Plug 'paulkass/jira-vim'                "not working yet (2020-02-11) 
 Plug 'mileszs/ack.vim'
-Plug 'camspiers/lens.vim'
 Plug 'camspiers/animate.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'xuyuanp/nerdtree-git-plugin'
 Plug 'sjl/gundo.vim'
+Plug 'habamax/vim-asciidoctor'
+Plug 'arecarn/crunch.vim'
+Plug 'arecarn/selection.vim'
+Plug 'majutsushi/tagbar'
+
+if v:version >= 800
+    Plug 'w0rp/ale'
+    Plug 'paulkass/jira-vim'                "not working yet (2020-02-11) 
+    Plug 'ianva/vim-youdao-translater'
+    Plug 'camspiers/lens.vim'
+endif
 
 call plug#end()
 
+"nerdtree-git-plugin {{{2
+"too slow when working with nerdtree side panel, have to disable
+let g:loaded_nerdtree_git_status = 0
+
+"
+"Sum--- {{{2
+"usage: visual block selection: :Sum, then paste result
+"
+"options:
+"If non-zero, this option causes Sum to also save the result in the unnamed
+"register 
+let g:Sum_yank=0
+"This option specifies a pattern to be ignored in floating
+"point numbers; by default, Sum will ignore commas.  One
+"may specify any pattern to be ignored (see |regexp|).
+"Letting g:Sum_ignorepat="" means no characters will be ignored.
+"let g:Sum_ignorepat
+
+
+" Sum.vim : sum a visual-block column of floating point numbers
+" Author  : Charles E. Campbell
+" Date    : Mar 04, 2014 - Nov 13, 2018
+" Version : 1e	ASTRO-ONLY
+" ---------------------------------------------------------------------
+" Load Once: {{{3
+if &cp || exists("g:loaded_Sum")
+ finish
+endif
+let g:loaded_Sum= "v1e"
+
+" ---------------------------------------------------------------------
+" Default ignore character:
+if !exists("g:Sum_ignorepat")
+ let s:Sum_ignorepat= ','
+else
+ let s:Sum_ignorepat= g:Sum_ignorepat
+endif
+if !exists("g:Sum_yank")
+ let s:Sum_yank= 0
+else
+ let s:Sum_yank= g:Sum_yank
+endif
+
+if !exists("g:Sumfmt")
+ let s:Sumfmt= "%f"
+else
+ let s:Sumfmt= g:Sumfmt
+endif
+
+" ---------------------------------------------------------------------
+" Public Interface: {{{3
+com! -range -nargs=*	Sum		call s:ColSum(<f-args>)
+com! -nargs=1			Sumfmt	let s:Sumfmt=<q-args>
+
+" ---------------------------------------------------------------------
+" s:ColSum: sum a visually-selected column or row of numbers {{{3
+fun! s:ColSum(...) range
+"  call Dfunc("s:ColSum() a:0=".a:0." lines[".line("'<").",".line("'>")."] cols[".col("'<").",".col("'>")."]")
+  let akeep= @a
+  sil! keepj norm! gv"ay
+  let prblm = substitute(@a   ,'\_s\+'   ,'+','ge')
+"  call Decho("1 : prblm=".prblm)        
+  let prblm = substitute(prblm,'^+\+'    ,'' ,'e')
+"  call Decho("2 : prblm=".prblm)        
+  let prblm = substitute(prblm,'+\+$'    ,'' ,'e')
+"  call Decho("3 : prblm=".prblm)        
+  let prblm = substitute(prblm,'+\{2,}'  ,'+','ge')
+"  call Decho("4 : prblm=".prblm)        
+  let prblm = substitute(prblm,'+-'      ,'-','ge')
+"  call Decho("5 : prblm=".prblm)        
+  let prblm = substitute(prblm,'-+'      ,'-','ge')
+"  call Decho("6 : prblm=".prblm)        
+  let prblm = substitute(prblm,','       ,' ','ge')
+"  call Decho("7 : prblm=".prblm)       
+  let prblm = substitute(prblm,'[!:a-z]' ,' ','ge')
+"  call Decho("8 : prblm=".prblm)
+  let prblm = substitute(prblm,'\s\+'    ,'+','ge')
+"  call Decho("9 : prblm=".prblm)
+  let prblm = substitute(prblm,'+\+'     ,'+','ge')
+"  call Decho("10: prblm=".prblm)
+  let prblm = substitute(prblm,'+\+-+\+' ,'-','ge')
+"  call Decho("11: prblm=".prblm)
+  if strlen(s:Sum_ignorepat) >= 1
+   let prblm = substitute(prblm,s:Sum_ignorepat,'','ge')
+  endif
+"  call Decho("prblm=".prblm)
+  exe "let FPresult=".prblm
+  " sanity check the format
+  if s:Sumfmt !~ '^%'
+   let s:Sumfmt= '%f'
+  endif
+
+  " compute the result
+  let result= printf(s:Sumfmt,FPresult)
+"  call Decho("result=".result)
+  let @*    = result
+  let @a    = akeep
+  if s:Sum_yank
+   let @@= result
+  endif
+  redraw!
+  echomsg result
+"  call Dret("s:ColSum ".result)
+  return result
+endfun
+
+"crunch {{{2
+let g:crunch_precision = 15
+
+"howmuch {{{2
+"not accurate for large numbers(2020-05-09) 
+"work for visual block selection
+"
+"options:
+"let g:loaded_HowMuch = 1      "to disable
+let g:HowMuch_scale = 20
+let g:HowMuch_debug = 0
+"let g:HowMuch_auto_engines = ['bc', 'vim', 'py']
+
+
+"commands: 
+"
+":HowMuchVersion to display current plugin version. 
+":HowMuch [flags] To do math calculation                       *:HowMuch*
+"
+"available flags:
+"- r: result replaces the original selected text
+"- s: do sum
+"- =: output equal sign
+"
+"usage: visual block select, then :HowMuch rs
+"or use maps below
+
+"maps:
+vm ,cs <Plug>AutoCalcReplaceWithSum
+"
+" ======================================================================================
+" |                             Auto calculation mappings                              |
+" ======================================================================================
+" | Default             |     Features     |      To Remap                             |
+" ======================================================================================
+" |                     | auto-calculation;|                                           |
+" |  <Leader>?          | append result    | vmap ... <Plug>AutoCalcAppend             |
+" |                     | separator: " "   |                                           |
+" +---------------------+------------------+-------------------------------------------+
+" |                     | auto-calculation;|                                           |
+" |  <Leader>?s         | append result    | vmap ... <Plug>AutoCalcAppendWithSum      |
+" |                     | separator: " "   |                                           |
+" |                     | do sum           |                                           |
+" +---------------------+------------------+-------------------------------------------+
+" |                     | auto-calculation;|                                           |
+" |  <Leader>?=         | append result    | vmap ... <Plug>AutoCalcAppendWithEq       |
+" |                     | separator: " = " |                                           |
+" +---------------------+------------------+-------------------------------------------+
+" |                     | auto-calculation;|                                           |
+" |  <Leader>?=s        | append result    | vmap ... <Plug>AutoCalcAppendWithEqAndSum |
+" |                     | separator: " = " |                                           |
+" |                     | do sum           |                                           |
+" +---------------------+------------------+-------------------------------------------+
+" |                     | auto-calculation |                                           |
+" |  <Leader><Leader>?  | replace expr     |                                           |
+" |                     | with result      | vmap ... <Plug>AutoCalcReplace            |
+" |                     |                  |                                           |
+" +---------------------+------------------+-------------------------------------------+
+" |                     | auto-calculation |                                           |
+" |  <Leader><leader>?s | replace expr     | vmap ... <Plug>AutoCalcReplaceWithSum     |
+" |                     | with result      |                                           |
+" |                     | do sum           |                                           |
+" ======================================================================================
+
+"vim-asciidoctor {{{2
+let g:asciidoctor_fenced_languages = ['python', 'c', 'javascript', 'sh']
+"let g:asciidoctor_folding = 1
+"let g:asciidoctor_fold_options = 1
+func! AsciidoctorHighlight()
+    " Highlight asciidoctor syntax with colors you like.
+    " For solarized8 colorscheme
+    if get(g:, "colors_name", "default") == "solarized8"
+        hi asciidoctorTitle guifg=#ff0000 gui=bold ctermfg=red cterm=bold
+        hi asciidoctorOption guifg=#00ff00 ctermfg=green
+        hi link asciidoctorH1 Directory
+    elseif get(g:, "colors_name", "default") == "default"
+        hi link asciidoctorIndented PreProc
+    endif
+endfunc
+augroup ASCIIDOCTOR_COLORS | au!
+    au Colorscheme * call AsciidoctorHighlight()
+    au BufNew,BufRead *.adoc call AsciidoctorHighlight()
+augroup end
+
+
+"JiraVim {{{2
+let g:jiraVimDomainName = "contrail-jws"
+let g:jiraVimDomainName = "http://contrail-jws.atlassian.net"
+let g:jiraVimEmail = "pings@juniper.net"
+let g:jiraVimToken = "SqSU8lTerMSENhQ9rSqcC8DE"
+
+"AsyncRun {{{2
+"https://github.com/skywind3000/asyncrun.vim/wiki/FAQ#cant-see-the-realtime-output-when-running-a-python-script
+"disable python's stdout buffering when running in background
+let $PYTHONUNBUFFERED = 0
+let g:asyncrun_open = 8         "auto open qfix?
+
 "ack {{{2
 cnoreabbrev Ack Ack!
+
+"Use this option to highlight the searched term.
+let g:ackhighlight = 1
+"Use this option to fold the results in quickfix by file name
+"let g:ack_autofold_results=1
+"Use this option to use vim-dispatch to run searches in the background
+"let g:ack_use_dispatch = 1
+"enable blank searches to run against the word under the cursor
+let g:ack_use_cword_for_empty_search = 0
 
 "Calendar {{{2
 let g:calendar_google_calendar = 1
@@ -4403,6 +4669,7 @@ let g:voom_ft_modes = {'asciidoc': 'asciidoc',
     \'md': 'markdown',
     \'mkd': 'markdown',
     \'python': 'python',
+    \'asciidoctor': 'asciidoc',
     \}
 "let g:voom_default_mode = 'asciidoc'
 
@@ -4718,9 +4985,6 @@ endif
 "(2016-03-10) disable this, for unknown reason it freeze some asciidoc on save
 execute pathogen#infect()
 
-"Sum--- {{{2
-let g:Sum_yank=0
-
 "MPage--- {{{2
 nn ,mp :MPage 2<CR>
 
@@ -4826,16 +5090,16 @@ autocmd! BufRead,BufNewFile *.ics setfiletype icalendar
 
 "conqTerm--- {{{2
 "
-"insert mode quick paste, seems not supported in conqterm {{{2
+"insert mode quick paste, seems not supported in conqterm
 inoremap 1 scp://jtac@192.168.46.146:/mnt/NAS/media/jtac/ping/ inoremap 2 scp://pings@/volume/build/junos/dev_x_123_att/12.3/development/20131109.1/ship
 
 "currently experimenting
 "Use this key to send the currently selected text to the most recently created
 "Conque buffer.
 "let g:ConqueTerm_SendVisKey = ',cv'
-nn ,ct :tabnew <bar> :ConqueTerm bash<cr>cd<cr>
-nn ,cs :new <bar> :ConqueTerm bash<cr>cd<cr>
-nn ,cv :vnew <bar> :ConqueTerm bash<cr>cd<cr>
+"nn ,ct :tabnew <bar> :ConqueTerm bash<cr>cd<cr>
+"nn ,cs :new <bar> :ConqueTerm bash<cr>cd<cr>
+"nn ,cv :vnew <bar> :ConqueTerm bash<cr>cd<cr>
 
 nn ,st :VimShellTab<cr>
 nn ,ss :new <bar> :VimShellCreate<cr>
@@ -5005,6 +5269,7 @@ let g:NERDTreeMapPreviewVSplit='gv'
 let g:NERDTreeMapHelp='h'
 "5. Directories are first, newest to oldest, then everything else, newest to oldest.
 let g:NERDTreeSortOrder=['\/$', '*', '[[-timestamp]]']
+let g:NERDTreeSortOrder=['\/$', '*']
 "
 "Mark--- {{{2
 "By default, the Mark plug indeed adds the highlighted text to both input and
@@ -5209,6 +5474,7 @@ let g:repl_program = {
                         \       'asciidoc': 'ipython3',
 			\	'default': 'bash'
 			\	}
+
 let g:repl_exit_commands = {
 			\	'python': 'quit()',
 			\	'ipython3': 'quit()',
